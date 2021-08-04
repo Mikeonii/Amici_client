@@ -1,5 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import auth from "./auth.js";
+import notification from "./notification.js";
+import action from "./action.js";
+import admin from "./admin.js";
+// import subscriber from "./subscriber.js";
 
 Vue.use(Vuex);
 
@@ -7,5 +12,11 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: {},
+  modules: {
+    auth,
+    notification,
+    action,
+    admin,
+    // subscriber
+  },
 });
