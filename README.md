@@ -22,3 +22,10 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+HOW TO USE THIS TEMPLATE
+### Setting up the Server
+1. Create database 
+2. configure .env
+

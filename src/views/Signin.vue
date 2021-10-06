@@ -16,32 +16,6 @@
                           max-width="100%"
                         ></v-img>
                       </div>
-                      <!-- <div class="text-center">
-                        <v-row>
-                          <v-col class="">
-                            <h2
-                              class="
-                                text-h4
-                                font-weight-bold
-                                primary--text
-                                text--lighten-4
-                              "
-                            >
-                              PROJECT TITLE
-                            </h2>
-                            <p
-                              class="
-                                font-weight-thin
-                                text-h6
-                                primary--text
-                                text--lighten-3
-                              "
-                            >
-                              Project Description goes here..
-                            </p></v-col
-                          >
-                        </v-row>
-                      </div> -->
                     </v-container>
                   </v-col>
                   <v-col cols="">

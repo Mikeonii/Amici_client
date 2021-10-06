@@ -1,5 +1,6 @@
 <template>
   <v-toolbar flat class="mb-10 top_bar" color="" v-if="user">
+    <v-spacer></v-spacer>
     <v-toolbar-title class="font-weight-thin display-1">{{
       page_name
     }}</v-toolbar-title>
@@ -15,7 +16,7 @@
     </v-btn>
     <v-btn text class="">
       <v-icon class="pr-2">mdi-account-circle</v-icon>
-      {{ user.first_name }}
+      {{ user.name }}
     </v-btn>
     <v-btn text class="" :loading="loading" @click="logout()">
       <v-icon class="pr-2">mdi-logout</v-icon>
@@ -32,7 +33,7 @@ export default {
       loading: false,
     };
   },
-  props: ["page_name"],
+  props: { page_name: String },
   computed: {
     ...mapGetters({
       user: "auth/user",
