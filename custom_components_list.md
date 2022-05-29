@@ -1,5 +1,23 @@
 <!-- NOTIFICATIONS COMPONENT -->
+<h1>How to use Loading Alert Modal</h1>
 
+1. import component using lazy loading
+  props: {
+    LoadingAlertModal: () => import("@/components/LoadingAlertModal.vue"),
+  },
+2. register in data    
+      dialog_data: "",
+      dialog_id: "",
+      dialog: false,
+3. register in methods
+     open_dialog(data, id, dialog) {
+      this.dialog_data = data;
+      this.id = id;
+      this.dialog = dialog;
+    },
+4. include in template
+   <loading-alert-modal :data="dialog_data" :id="dialog_id" :dialog="dialog" />
+   
 <h1>How to use Confirm Notification</h1>
 
 1. import the component
