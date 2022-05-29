@@ -4,7 +4,7 @@
     <v-navigation-drawer
       app
       v-model="drawer"
-      src="@/assets/test.jpg"
+      src="@/assets/sample_background.jpg"
       width="320"
       class=""
     >

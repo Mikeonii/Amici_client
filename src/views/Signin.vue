@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-img src="@/assets/mata_background.jpg">
+    <v-img src="@/assets/sample_background1.jpg">
       <v-container class="mt-15">
         <v-container class="fill-height mt-13" fluid>
           <v-row align="center" justify="center">
