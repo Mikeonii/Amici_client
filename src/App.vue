@@ -4,8 +4,8 @@
     :style="{ background: $vuetify.theme.themes[theme].background }"
   >
     <div v-if="page_ready">
-      <TheNavBar />
-      <TopNavBar :page_name="currentRouteName" />
+      <TheNavBar v-if="show_navs" />
+      <TopNavBar :page_name="currentRouteName" v-if="show_navs" />
       <v-main>
         <!-- alert notification -->
         <notification />
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import TopNavBar from "@/components/TopNavBar.vue";
 import TheNavBar from "@/components/TheNavBar.vue";
 
@@ -41,6 +41,9 @@ export default {
     this.check_user();
   },
   computed: {
+    ...mapGetters({
+      show_navs: "auth/show_navs",
+    }),
     currentRouteName() {
       return this.$route.name;
     },

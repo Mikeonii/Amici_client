@@ -1,18 +1,18 @@
 <template>
   <div>
-    <v-img src="@/assets/sample_background1.jpg">
+    <v-img src="@/assets/banner.jpg" width="" height="%">
       <v-container class="mt-15">
         <v-container class="fill-height mt-13" fluid>
           <v-row align="center" justify="center">
             <v-col cols="15" sm="8" md="8">
               <v-card class="elevation-12 rounded-l" max-width="">
                 <v-row>
-                  <v-col class="primary darken-4 white--text" cols="6">
+                  <v-col class="grey darken-4" cols="6">
                     <v-container class="mt-12 mb-15">
                       <div class="d-flex justify-center">
                         <v-img
                           class=""
-                          src="@/assets/sample_logo.png"
+                          src="@/assets/logo.png"
                           max-width="100%"
                         ></v-img>
                       </div>
@@ -44,8 +44,8 @@
                       <v-btn
                         rounded
                         elevation="2"
-                        color="primary darken-4"
-                        class="mr-2"
+                        color="black"
+                        class="mr-2 white--text"
                         @click="submit()"
                         :loading="loading"
                         >Login</v-btn
@@ -53,12 +53,10 @@
                       <v-btn rounded elevation="2" color="yellow" @click="reset"
                         >Reset</v-btn
                       >
-                      <p class="caption primary--text mt-5">
-                        Forgot your password?
-                      </p>
+                      <p class="caption mt-5">Forgot your password?</p>
                       <v-divider class="mt-"></v-divider>
                       <p class="caption grey--text text--lighten-1 mt-5">
-                        Powered by: NWAS IT Solutions | Version 2.0
+                        Powered by: JMBComputers | Version 2.0
                       </p>
                     </div>
                   </v-col>
