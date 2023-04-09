@@ -149,6 +149,12 @@ export default {
           name: "Accounts",
           route: "/accounts",
         },
+
+        {
+          icon: "mdi-package-variant-closed",
+          name: "Items",
+          route: "/items",
+        },
       ],
       links2: [
         { icon: "mdi-login", name: "Sign-in", route: "/signin", small: true },

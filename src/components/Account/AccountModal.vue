@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn icon color="primary" @click="dialog = true">
+    <v-btn icon color="primary" @click="open">
       <v-icon>mdi-list-box</v-icon></v-btn
     >
     <v-dialog v-model="dialog" width="700" persistent>
@@ -46,23 +46,58 @@
           </v-row>
           <br />
           <!-- MEASUREMENTS TABLE -->
-          <h4>Body Measurements</h4>
+          <v-row class="mt-3">
+            <v-col> <h4>Body Measurement</h4></v-col>
+            <v-spacer></v-spacer>
+            <v-col class="d-flex justify-end">
+              <add-body-measurements-modal :account_id="item.id" />
+            </v-col>
+          </v-row>
           <v-data-table
-            :items="measurement"
+            :items="measurements"
             :headers="measurement_headers"
-          ></v-data-table>
+            :loading="table_loading"
+          >
+            <template v-slot:item.created_at="{ item }">
+              {{ formatted_date_time(item.created_at) }}</template
+            >
+          </v-data-table>
+
           <!-- CREDIT TRANSACTION TABLE -->
-          <h4>Credit Transactions</h4>
+          <v-row class="mt-3">
+            <v-col> <h4>Credit Transactions</h4></v-col>
+            <v-spacer></v-spacer>
+            <v-col class="d-flex justify-end">
+              <add-credit-modal :item_id="item.id" />
+            </v-col>
+          </v-row>
           <v-data-table
             :items="credit_transactions"
             :headers="credit_transactions_headers"
-          ></v-data-table>
+            :loading="table_loading"
+          >
+            <template v-slot:item.created_at="{ item }">
+              {{ formatted_date_time(item.created_at) }}</template
+            >
+          </v-data-table>
+
           <!-- ITEM TRANSACTION TABLE -->
-          <h4>Item Transactions</h4>
+          <v-row class="mt-3">
+            <v-col> <h4>Item Transactions</h4></v-col>
+            <v-spacer></v-spacer>
+            <v-col class="d-flex justify-end">
+              <add-item-transaction :account_id="item.id" />
+            </v-col>
+          </v-row>
           <v-data-table
             :items="item_transactions"
             :headers="item_transactions_headers"
-          ></v-data-table>
+            :loading="table_loading"
+          >
+            <template v-slot:item.created_at="{ item }">
+              {{ formatted_date_time(item.created_at) }}</template
+            >
+          </v-data-table>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="dialog = false">Close</v-btn>
@@ -73,15 +108,20 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
+import AddCreditModal from "./AddCreditModal.vue";
+import AddItemTransaction from "../Item/AddItemTransaction.vue";
+import AddBodyMeasurementsModal from "./AddBodyMeasurementModal.vue";
 export default {
+  components: { AddCreditModal, AddItemTransaction, AddBodyMeasurementsModal },
   props: ["item"],
   data() {
     return {
+      table_loading: false,
       dialog: false,
       item_transactions_headers: [
-        { text: "Product Name", value: "product_name" },
+        { text: "Product Name", value: "item.item_name" },
         { text: "Quantity", value: "quantity" },
         { text: "Amount", value: "amount" },
         { text: "Transaction Date", value: "created_at" },
@@ -129,13 +169,33 @@ export default {
   },
   computed: {
     ...mapGetters({
-      measurement: "account/measurement",
+      measurements: "account/measurements",
+      credit_transactions: "account/credit_transactions",
+      item_transactions: "item/item_transactions",
     }),
   },
+
   methods: {
+    async open() {
+      this.dialog = true;
+      this.table_loading = true;
+      await this.get_credit_transactions(this.item.id);
+      await this.get_item_transactions(this.item.id);
+      await this.get_measurements(this.item.id);
+      this.table_loading = false;
+    },
+    ...mapActions({
+      get_credit_transactions: "account/get_credit_transactions",
+      get_item_transactions: "item/get_item_transactions",
+      get_measurements: "account/get_measurements",
+    }),
+
     formatted_date(item) {
       let x = moment(item).format("MMMM D, YYYY");
       return x;
+    },
+    formatted_date_time(dateTime) {
+      return moment(dateTime).format("MMMM D,YYYY - h:m:s A");
     },
     get_rank(rank) {
       if (rank == "Minotaur") return { color: "brown", stars: 1 };

@@ -20,7 +20,7 @@
           ></v-select>
           <div class="d-flex mt-2">
             <p>Birthdate</p>
-            <input type="date" v-model="item.birth_date" class="ml-2 mt-n4" />
+            <input type="date" v-model="item.birth_date" class="ml-2 mt-n" />
           </div>
           <v-text-field
             v-model="item.address"

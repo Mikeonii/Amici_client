@@ -6,6 +6,9 @@
         <v-spacer></v-spacer>
         <v-col class="d-flex justify-end">
           <add-account-modal />
+          <v-btn class="ml-2" @click="refresh">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
         </v-col>
       </v-row>
       <v-text-field
@@ -13,7 +16,12 @@
         label="Search"
         prepend-inner-icon="mdi-magnify"
       ></v-text-field>
-      <v-data-table :search="search" :items="accounts" :headers="headers">
+      <v-data-table
+        :search="search"
+        :items="accounts"
+        :headers="headers"
+        :loading="table_loading"
+      >
         <template v-slot:item.action="{ item }">
           <div class="d-flex">
             <account-modal :item="item" />
@@ -42,6 +50,7 @@ export default {
   components: { AddAccountModal, EditAccountModal, AccountModal },
   data() {
     return {
+      table_loading: false,
       search: "",
       button_loading: false,
       headers: [
@@ -78,6 +87,12 @@ export default {
       get_accounts: "account/get_accounts",
       delete_account: "account/delete_account",
     }),
+    refresh() {
+      this.table_loading = true;
+      this.get_accounts().then(() => {
+        this.table_loading = false;
+      });
+    },
     del(id) {
       let x = window.confirm("Are you sure you want to delete this account?");
       if (x) {

@@ -3,14 +3,22 @@ export default {
   namespaced: true,
   state: {
     accounts: [],
-    measurement: [],
+    credit_transactions: [],
+    measurements: [],
+    item_transactions: [],
   },
   getters: {
     accounts(state) {
       return state.accounts;
     },
-    measurement(state) {
-      return state.measurement;
+    credit_transactions(state) {
+      return state.credit_transactions;
+    },
+    measurements(state) {
+      return state.measurements;
+    },
+    item_transactions(state) {
+      return state.item_transactions;
     },
   },
   mutations: {
@@ -32,6 +40,24 @@ export default {
     },
     SET_MEASUREMENT(state, measurement) {
       state.measurement = measurement;
+    },
+    // CREDIT
+    SET_CREDIT_TRANSACTIONS(state, credit_transactions) {
+      state.credit_transactions = credit_transactions;
+    },
+    ADD_CREDIT(state, credit) {
+      state.credit_transactions.unshift(credit);
+    },
+    // ITEM
+    SET_ITEM_TRANSACTIONS(state, item_transactions) {
+      state.item_transactions = item_transactions;
+    },
+    // MEASUREMENTS
+    SET_MEASUREMENTS(state, measurements) {
+      state.measurements = measurements;
+    },
+    ADD_MEASUREMENT(state, measurement) {
+      state.measurements.unshift(measurement);
     },
   },
   actions: {
@@ -56,9 +82,35 @@ export default {
       commit("DELETE_ACCOUNT", account_id);
     },
 
+    // CREDIT_TRANSACTIONS
+    async get_credit_transactions({ commit }, account_id) {
+      let response = await axios.get("/credit_transactions/" + account_id);
+      commit("SET_CREDIT_TRANSACTIONS", response.data);
+    },
+
+    async add_credit_transaction({ commit }, request) {
+      let response = await axios.post("/credit_transaction", request);
+      commit("ADD_CREDIT_TRANSACTION", response.data);
+    },
+
+    async get_item_transactions({ commit }, account_id) {
+      let response = await axios.get("/item_transaction/" + account_id);
+      commit("SET_ITEM_TRANSACTIONS", response.data);
+    },
+
+    // BODY MEASUREMENT
+    async get_measurements({ commit }, account_id) {
+      let response = await axios.get("/measurements/" + account_id);
+      commit("SET_MEASUREMENTS", response.data);
+    },
     async get_measurement({ commit }, account_id) {
       let response = await axios.get("/measurement/" + account_id);
       commit("SET_MEASUREMENT", response.data);
+    },
+
+    async add_measurement({ commit }, request) {
+      let response = await axios.post("/measurement", request);
+      commit("ADD_MEASUREMENT", response.data);
     },
   },
 };

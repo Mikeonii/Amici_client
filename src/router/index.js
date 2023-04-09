@@ -1,11 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "@/store";
-
 import Dashboard from "../views/Dashboard.vue";
 import Account from "../views/Account.vue";
 import Signin from "../views/Signin.vue";
-
+import Items from "../views/Items.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -41,6 +40,18 @@ const routes = [
     component: Signin,
     beforeEnter: (to, from, next) => {
       if (store.getters["auth/authenticated"]) {
+        next({ name: "Dashboard" });
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/items",
+    name: "Items",
+    component: Items,
+    beforeEnter: (to, from, next) => {
+      if (!store.getters["auth/authenticated"]) {
         next({ name: "Dashboard" });
       } else {
         next();
