@@ -139,12 +139,6 @@ export default {
         { icon: "mdi-home", name: "Dashboard", route: "/" },
 
         {
-          icon: "mdi-cash-multiple",
-          name: "Payments",
-          route: "/payments",
-        },
-
-        {
           icon: "mdi-account-group",
           name: "Accounts",
           route: "/accounts",

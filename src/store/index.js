@@ -6,6 +6,7 @@ import action from "./action.js";
 import admin from "./admin.js";
 import account from "./account.js";
 import item from "./item.js";
+import attendance from "./attendance.js";
 // import subscriber from "./subscriber.js";
 
 Vue.use(Vuex);
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     admin,
     account,
     item,
+    attendance,
     // subscriber
   },
 });

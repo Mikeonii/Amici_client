@@ -12,6 +12,7 @@
         </v-col>
       </v-row>
       <v-text-field
+        autofocus
         v-model="search"
         label="Search"
         prepend-inner-icon="mdi-magnify"
