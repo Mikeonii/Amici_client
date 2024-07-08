@@ -6,6 +6,7 @@ export default {
     credit_transactions: [],
     measurements: [],
     item_transactions: [],
+    top_gymmers: [],
   },
   getters: {
     accounts(state) {
@@ -20,8 +21,14 @@ export default {
     item_transactions(state) {
       return state.item_transactions;
     },
+    top_gymmers(state) {
+      return state.top_gymmers;
+    },
   },
   mutations: {
+    SET_TOP_GYMMERS(state, top_gymmers) {
+      state.top_gymmers = top_gymmers;
+    },
     SET_ACCOUNTS(state, accounts) {
       state.accounts = accounts;
     },
@@ -61,6 +68,10 @@ export default {
     },
   },
   actions: {
+    async get_top_gymmers({ commit }) {
+      let response = await axios.get("/top_gymmers");
+      commit("SET_TOP_GYMMERS", response.data);
+    },
     // get accounts
     async get_accounts({ commit }) {
       let response = await axios.get("/accounts");
@@ -90,7 +101,7 @@ export default {
 
     async add_credit_transaction({ commit }, request) {
       let response = await axios.post("/credit_transaction", request);
-      commit("ADD_CREDIT_TRANSACTION", response.data);
+      commit("ADD_CREDIT", response.data);
     },
 
     async get_item_transactions({ commit }, account_id) {

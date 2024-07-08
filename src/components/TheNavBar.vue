@@ -13,14 +13,14 @@
         <template v-if="authenticated">
           <v-list-item>
             <v-list-item-avatar>
-              <img src="@/assets/logo.png" />
+              <img src="@/assets/jc_logo.jpg" />
             </v-list-item-avatar>
             <v-list-item-content>
               <!-- <template v-if="authenticated"> -->
               <v-list-item-title class="white--text text--lighten-4 overline"
-                >AMICI FITNESS SPA MGT. SYSTEM</v-list-item-title
+                >JC FITNESS GYM PASS SYSTEM</v-list-item-title
               >
-              <v-list-item-subtitle class="yellow--text text--darken-1"
+              <v-list-item-subtitle class="purple--text text--darken-1"
                 >Powered by JMBComputers</v-list-item-subtitle
               >
             </v-list-item-content>

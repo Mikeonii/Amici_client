@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <div>
+    <div class="pa-8 mt-n5">
       <v-row class="">
         <!-- TODO finish this -->
         <v-col> <h2>Items Table</h2> </v-col>
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
         <v-col class="d-flex justify-end">
           <add-item-modal />
           <v-btn class="ml-2" @click="refresh">

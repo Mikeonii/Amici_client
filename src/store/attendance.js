@@ -24,10 +24,33 @@ export default {
       commit("SET_ATTENDANCES", response.data);
     },
     async add_attendance({ commit }, card_no) {
+      var res;
       let response = await axios.post("/attendance/" + card_no);
-      if (response.data == "Account not registered")
-        return alert("Account not registered");
-      commit("ADD_ATTENDANCE", response.data);
+      console.log(response.data);
+      // check if response is string(with errors) return and display as errors
+      if (typeof response.data == "string") {
+        res = [null, response.data];
+        return res;
+      }
+      // for log out
+      else if (
+        response.data[1] ==
+        "Thank you for choosing JC Fitness Gym. Hope you had a good time!"
+      ) {
+        res = [
+          response.data[0],
+          "Thank you for choosing JC Fitness Gym. Hope you had a good time!",
+        ];
+        commit("ADD_ATTENDANCE", res[0]);
+        return res;
+      }
+      // for log in
+      else {
+        res = [response.data, "Successfully logged in"];
+        // if not, add attendance row to the table
+        commit("ADD_ATTENDANCE", res[0]);
+        return res;
+      }
     },
   },
 };

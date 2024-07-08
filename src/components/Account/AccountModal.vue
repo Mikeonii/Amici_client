@@ -9,14 +9,13 @@
         <v-card-text>
           <v-row>
             <v-col cols="3" class="mt-1">
-              <v-img src="@/assets/logo.png" width="100%"></v-img
+              <v-img src="@/assets/jc_logo.jpg" width="100%"></v-img
             ></v-col>
             <v-col cols="">
               <div class="d-flex">
                 <h2 class="display-2 font-weight-black">{{ item.name }}</h2>
                 <v-btn text :color="get_rank(item.rank).color" large
                   >{{ item.rank }}
-
                   <v-icon v-for="i in get_rank(item.rank).stars" :key="i">
                     mdi-star
                   </v-icon>
@@ -38,13 +37,22 @@
                 {{ formatted_date(item.created_at) }}
               </p>
               <p class="mt-n4 subtitle-2 font-weight-bold">
-                Account Expiration Date:
-                {{ formatted_date(item.created_at) }}
+                Monthly Expiration Date:
+                {{ formatted_date(item.expiry_date) }}
+              </p>
+              <p class="mt-n4 subtitle-2 font-weight-bold">
+                Monthly Expiration Date:
+                {{ formatted_date(item.expiry_date) }}
               </p>
               <h2>Credits: {{ item.credits }}</h2>
             </v-col>
           </v-row>
           <br />
+          <div class="d-flex">
+            <!-- <v-btn class="ml-2">Add Measurement</v-btn> -->
+            <credit-transaction-modal :item="item" class="ml-2" />
+            <item-transaction-modal :item="item" class="ml-2" />
+          </div>
           <!-- MEASUREMENTS TABLE -->
           <v-row class="mt-3">
             <v-col> <h4>Body Measurement</h4></v-col>
@@ -53,47 +61,7 @@
               <add-body-measurements-modal :account_id="item.id" />
             </v-col>
           </v-row>
-          <v-data-table
-            :items="measurements"
-            :headers="measurement_headers"
-            :loading="table_loading"
-          >
-            <template v-slot:item.created_at="{ item }">
-              {{ formatted_date_time(item.created_at) }}</template
-            >
-          </v-data-table>
-
-          <!-- CREDIT TRANSACTION TABLE -->
-          <v-row class="mt-3">
-            <v-col> <h4>Credit Transactions</h4></v-col>
-            <v-spacer></v-spacer>
-            <v-col class="d-flex justify-end">
-              <add-credit-modal :item_id="item.id" />
-            </v-col>
-          </v-row>
-          <v-data-table
-            :items="credit_transactions"
-            :headers="credit_transactions_headers"
-            :loading="table_loading"
-          >
-            <template v-slot:item.created_at="{ item }">
-              {{ formatted_date_time(item.created_at) }}</template
-            >
-          </v-data-table>
-
-          <!-- ITEM TRANSACTION TABLE -->
-          <v-row class="mt-3">
-            <v-col> <h4>Item Transactions</h4></v-col>
-            <v-spacer></v-spacer>
-            <v-col class="d-flex justify-end">
-              <add-item-transaction :account_id="item.id" />
-            </v-col>
-          </v-row>
-          <v-data-table
-            :items="item_transactions"
-            :headers="item_transactions_headers"
-            :loading="table_loading"
-          >
+          <v-data-table :items="measurements" :headers="measurement_headers">
             <template v-slot:item.created_at="{ item }">
               {{ formatted_date_time(item.created_at) }}</template
             >
@@ -101,6 +69,8 @@
         </v-card-text>
         <v-card-actions>
           <v-btn @click="dialog = false">Close</v-btn>
+          <v-spacer></v-spacer>
+          <p class="caption">AccountModal.vue</p>
         </v-card-actions></v-card
       ></v-dialog
     >
@@ -110,27 +80,21 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
-import AddCreditModal from "./AddCreditModal.vue";
-import AddItemTransaction from "../Item/AddItemTransaction.vue";
+
 import AddBodyMeasurementsModal from "./AddBodyMeasurementModal.vue";
+import ItemTransactionModal from "../Item/ItemTransactionModal.vue";
+import CreditTransactionModal from "../CreditTransactionModal.vue";
 export default {
-  components: { AddCreditModal, AddItemTransaction, AddBodyMeasurementsModal },
+  components: {
+    AddBodyMeasurementsModal,
+    ItemTransactionModal,
+    CreditTransactionModal,
+  },
   props: ["item"],
   data() {
     return {
-      table_loading: false,
       dialog: false,
-      item_transactions_headers: [
-        { text: "Product Name", value: "item.item_name" },
-        { text: "Quantity", value: "quantity" },
-        { text: "Amount", value: "amount" },
-        { text: "Transaction Date", value: "created_at" },
-      ],
-      credit_transactions_headers: [
-        { text: "Transaction Type", value: "transaction_type" },
-        { text: "Amount", value: "amount" },
-        { text: "Transaction Date", value: "created_at" },
-      ],
+
       measurement_headers: [
         {
           text: "Upper Arm",
@@ -170,19 +134,16 @@ export default {
   computed: {
     ...mapGetters({
       measurements: "account/measurements",
-      credit_transactions: "account/credit_transactions",
-      item_transactions: "item/item_transactions",
     }),
   },
 
   methods: {
     async open() {
       this.dialog = true;
-      this.table_loading = true;
+
       await this.get_credit_transactions(this.item.id);
       await this.get_item_transactions(this.item.id);
       await this.get_measurements(this.item.id);
-      this.table_loading = false;
     },
     ...mapActions({
       get_credit_transactions: "account/get_credit_transactions",

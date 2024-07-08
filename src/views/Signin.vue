@@ -12,7 +12,7 @@
                       <div class="d-flex justify-center">
                         <v-img
                           class=""
-                          src="@/assets/logo.png"
+                          src="@/assets/jc_logo.jpg"
                           max-width="100%"
                         ></v-img>
                       </div>
@@ -50,7 +50,12 @@
                         :loading="loading"
                         >Login</v-btn
                       >
-                      <v-btn rounded elevation="2" color="yellow" @click="reset"
+                      <v-btn
+                        rounded
+                        elevation="2"
+                        color="purple accent-4"
+                        class="white--text"
+                        @click="reset"
                         >Reset</v-btn
                       >
                       <p class="caption mt-5">Forgot your password?</p>

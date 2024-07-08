@@ -9,6 +9,10 @@ export default {
   },
   // read info from state
   getters: {
+    default_server_url() {
+      return "http://127.0.0.1:8000";
+      // return "https://server.jmbcomputers.com";
+    },
     show_navs(state) {
       return state.show_navs;
     },

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-btn @click="dialog = true" color="primary" small>Add</v-btn>
+    <v-btn @click="dialog = true" color="">Add</v-btn>
     <v-dialog v-model="dialog" width="400" persistent>
       <v-card>
         <v-card-title>Credit Transaction</v-card-title>
         <v-card-text>
           <v-select
             label="Transaction Type"
-            :items="['Add', 'Subtract', 'Transfer']"
+            :items="['Add', 'Subtract']"
             v-model="form.transaction_type"
           ></v-select>
           <v-text-field label="Amount" v-model="form.amount"></v-text-field>

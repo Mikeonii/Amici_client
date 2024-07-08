@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat class="mb-10 top_bar" color="" v-if="user">
+  <v-toolbar flat class="mb- top_bar" color="grey lighten-3" v-if="user">
     <v-row>
       <v-col cols="3"></v-col>
       <v-col cols="6">
