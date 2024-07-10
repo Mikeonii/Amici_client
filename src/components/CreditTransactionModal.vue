@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-btn @click="dialog = true">Credit Transactions</v-btn>
+    <v-btn color="blue" small class="white--text" @click="dialog = true"
+      >Credit Transactions</v-btn
+    >
     <v-dialog v-model="dialog" width="700" persistent>
       <v-card>
         <v-card-title
@@ -47,6 +49,7 @@ export default {
       button_loading: false,
 
       credit_transactions_headers: [
+        { text: "ID", value: "id" },
         { text: "Transaction Type", value: "transaction_type" },
         { text: "Amount", value: "amount" },
         { text: "Transaction Date", value: "created_at" },

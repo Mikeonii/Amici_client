@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="dialog = true">Item Transactions</v-btn>
+    <v-btn color="yellow" small @click="dialog = true">Item Transactions</v-btn>
     <v-dialog v-model="dialog" width="800" persistent>
       <v-card>
         <v-card-title>Item Transactions Modal</v-card-title>
@@ -47,6 +47,7 @@ export default {
       dialog: false,
       button_loading: false,
       item_transactions_headers: [
+        { text: "ID", value: "id" },
         { text: "Product Name", value: "item.item_name" },
         { text: "Quantity", value: "quantity" },
         { text: "Amount", value: "amount" },

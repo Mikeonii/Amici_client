@@ -138,11 +138,11 @@ export default {
       links: [
         { icon: "mdi-home", name: "Dashboard", route: "/" },
 
-        {
-          icon: "mdi-account-group",
-          name: "Accounts",
-          route: "/accounts",
-        },
+        // {
+        //   icon: "mdi-account-group",
+        //   name: "Accounts",
+        //   route: "/accounts",
+        // },
 
         {
           icon: "mdi-package-variant-closed",

@@ -97,7 +97,15 @@
             <template v-slot:item.action="{ item }">
               <div class="pa-2">
                 <v-avatar size="40" color="grey darken-3">
-                  <h2>{{ item.account.name.charAt(0) }}</h2>
+                  <h2 v-if="!item.account.profile_picture_url">
+                    {{ item.account.name.charAt(0) }}
+                  </h2>
+
+                  <v-img
+                    v-else
+                    :src="item.account.profile_picture_url"
+                    width="100%"
+                  ></v-img>
                 </v-avatar>
               </div>
             </template>
@@ -120,7 +128,7 @@
           <!-- 2nd TABLE -->
         </v-col>
         <v-col>
-          <h2 class="white--text">TOP GYMMERS</h2>
+          <h2 class="white--text">TOP GYM GOERS</h2>
           <v-data-table
             :items="top_gymmers"
             :headers="top_gymmers_header"
@@ -133,7 +141,14 @@
             <template v-slot:item.action="{ item }">
               <div class="pa-2">
                 <v-avatar size="40" color="grey darken-3">
-                  <h2>{{ item.name.charAt(0) }}</h2>
+                  <h2 v-if="!item.profile_picture_url">
+                    {{ item.name.charAt(0) }}
+                  </h2>
+                  <v-img
+                    v-else
+                    :src="item.profile_picture_url"
+                    width="100%"
+                  ></v-img>
                 </v-avatar>
               </div>
             </template>
@@ -147,6 +162,9 @@
                   </v-icon>
                 </v-btn>
               </div>
+            </template>
+            <template v-slot:item.formatted_gym_time="{ item }">
+              <p>{{ item.total_gym_time / 60 }} Hours</p>
             </template>
           </v-data-table>
         </v-col>
@@ -163,6 +181,9 @@
           </v-card-text></v-card
         ></v-dialog
       >
+      <p class="caption white--text mt-5 text-center">
+        Developed by: Jan Michael Besinga 2024
+      </p>
     </v-container>
   </v-img>
 </template>
@@ -202,6 +223,8 @@ export default {
         { text: "Rank", value: "rank" },
         { text: "Registered", value: "created_at" },
         { text: "Expiration Date", value: "expiry_date" },
+        { text: "Total Att. Rows", value: "total_attendance_rows" },
+        { text: "Total Gym Time", value: "formatted_gym_time" },
       ],
     };
   },
@@ -222,7 +245,17 @@ export default {
       add_attendance: "attendance/add_attendance",
       get_top_gymmers: "account/get_top_gymmers",
     }),
+    // format_gym_time(minutes) {
+    //   var hours = minutes / 60;
+    //   var minute = minutes % 60;
+    //   var formatted_hours = hours == 1 ? hours + " hour" : hours + " hours";
+    //   var formatted_minutes =
+    //     minute == 1 ? minute + " minute" : minute + " minutes";
 
+    //   // Build the final formatted string
+    //   var formatted_string = formatted_hours + " and " + formatted_minutes;
+    //   return formatted_string;
+    // },
     insert_attendance() {
       this.add_attendance(this.card_id).then((data) => {
         // console.log(data);
@@ -284,13 +317,6 @@ export default {
   mounted() {
     this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 300);
     setInterval(this.clock, 1000);
-    if (this.attendances.length == 0) {
-      this.progress_linear = true;
-      this.get_attendances().then(() => {
-        this.progress_linear = false;
-      });
-      this.get_top_gymmers();
-    }
   },
 };
 </script>

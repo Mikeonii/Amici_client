@@ -68,6 +68,21 @@ export default {
     },
   },
   actions: {
+    async upload_profile_picture({ commit }, request) {
+      let response = await axios.post("/upload_profile_picture", request);
+
+      commit("EDIT_ACCOUNT", response.data);
+    },
+
+    async upload_body_improvement_picture({ commit }, request) {
+      let response = await axios.post(
+        "/upload_body_improvement_picture",
+        request
+      );
+
+      commit("EDIT_ACCOUNT", response.data);
+    },
+
     async get_top_gymmers({ commit }) {
       let response = await axios.get("/top_gymmers");
       commit("SET_TOP_GYMMERS", response.data);

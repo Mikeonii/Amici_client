@@ -114,8 +114,7 @@ export default {
       // console.log(item);
       let x = window.confirm("Are you sure you want to proceed?");
       if (x) {
-        let url =
-          this.default_server_url + "/print_statement_of_account/" + item.id;
+        let url = this.default_server_url + "/print_waiver_form/" + item.id;
         window.open(url);
       }
     },

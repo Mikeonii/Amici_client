@@ -3,14 +3,48 @@
     <v-btn icon color="primary" @click="open">
       <v-icon>mdi-list-box</v-icon></v-btn
     >
-    <v-dialog v-model="dialog" width="700" persistent>
+    <v-dialog v-model="dialog" width="850" persistent>
       <v-card>
         <v-card-title>Account Info</v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="3" class="mt-1">
-              <v-img src="@/assets/jc_logo.jpg" width="100%"></v-img
-            ></v-col>
+            <v-col cols="4" class="mt-1">
+              <div v-if="!item.profile_picture_url">
+                <v-img
+                  src="@/assets/jc_logo.jpg"
+                  width="100%"
+                  height="50%"
+                ></v-img>
+              </div>
+              <div v-else>
+                <v-avatar size="250">
+                  <v-img :src="item.profile_picture_url" width="100%"></v-img>
+                </v-avatar>
+              </div>
+
+              <div class="mt-5">
+                <input
+                  class="black--text"
+                  type="file"
+                  ref="photo_upload"
+                  name="photo_upload"
+                  @change="insert_image"
+                  accept="image/jpeg"
+                />
+                <br />
+                <v-btn
+                  small
+                  class="mt-5"
+                  color=""
+                  @click="upload_image"
+                  :loading="uploading"
+                >
+                  Upload Picture</v-btn
+                >
+              </div>
+
+              '</v-col
+            >
             <v-col cols="">
               <div class="d-flex">
                 <h2 class="display-2 font-weight-black">{{ item.name }}</h2>
@@ -41,31 +75,45 @@
                 {{ formatted_date(item.expiry_date) }}
               </p>
               <p class="mt-n4 subtitle-2 font-weight-bold">
-                Monthly Expiration Date:
-                {{ formatted_date(item.expiry_date) }}
+                Annual Membership Expiration Date:
+                {{ formatted_date(item.yearly_expiry_date) }}
               </p>
-              <h2>Credits: {{ item.credits }}</h2>
+              <div class="d-flex">
+                <h2>
+                  <v-icon>mdi-bitcoin</v-icon>Credits:
+                  <span class="orange--text"> {{ item.credits }}</span>
+                </h2>
+                <h2 class="ml-5">
+                  <v-icon>mdi-clock-outline</v-icon> Total Gym Time:
+                  <span class="green--text">
+                    {{ item.total_gym_time }} minutes</span
+                  >
+                </h2>
+              </div>
+              <div class="d-flex mt-4">
+                <!-- <v-btn class="ml-2">Add Measurement</v-btn> -->
+                <credit-transaction-modal :item="item" class="ml-2" />
+                <item-transaction-modal :item="item" class="ml-2" />
+              </div>
             </v-col>
           </v-row>
           <br />
-          <div class="d-flex">
-            <!-- <v-btn class="ml-2">Add Measurement</v-btn> -->
-            <credit-transaction-modal :item="item" class="ml-2" />
-            <item-transaction-modal :item="item" class="ml-2" />
-          </div>
-          <!-- MEASUREMENTS TABLE -->
-          <v-row class="mt-3">
-            <v-col> <h4>Body Measurement</h4></v-col>
-            <v-spacer></v-spacer>
-            <v-col class="d-flex justify-end">
-              <add-body-measurements-modal :account_id="item.id" />
-            </v-col>
-          </v-row>
-          <v-data-table :items="measurements" :headers="measurement_headers">
-            <template v-slot:item.created_at="{ item }">
-              {{ formatted_date_time(item.created_at) }}</template
-            >
-          </v-data-table>
+          <!-- <div class="">
+            <h2 class="heading-3">Body Transformation</h2>
+
+            <v-row>
+              <v-col v-for="n in 9" :key="n" class="d-flex child-flex" cols="4">
+                <v-img
+                  :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+                  :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+                  aspect-ratio="1"
+                  class="grey lighten-2"
+                >
+                </v-img>
+              </v-col>
+            </v-row>
+          </div> -->
+          <body-measurement :item="item" />
         </v-card-text>
         <v-card-actions>
           <v-btn @click="dialog = false">Close</v-btn>
@@ -78,77 +126,67 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+// import firebase from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { mapActions } from "vuex";
 import moment from "moment";
 
-import AddBodyMeasurementsModal from "./AddBodyMeasurementModal.vue";
 import ItemTransactionModal from "../Item/ItemTransactionModal.vue";
 import CreditTransactionModal from "../CreditTransactionModal.vue";
+import BodyMeasurement from "./BodyMeasurement.vue";
 export default {
   components: {
-    AddBodyMeasurementsModal,
     ItemTransactionModal,
     CreditTransactionModal,
+    BodyMeasurement,
   },
   props: ["item"],
   data() {
     return {
       dialog: false,
-
-      measurement_headers: [
-        {
-          text: "Upper Arm",
-          value: "upper_arm",
-        },
-        {
-          text: "Forearm",
-          value: "forearm",
-        },
-        {
-          text: "Chest",
-          value: "chest",
-        },
-        {
-          text: "Thigh",
-          value: "thigh",
-        },
-        {
-          text: "Calf",
-          value: "calf",
-        },
-        {
-          text: "Waist",
-          value: "waist",
-        },
-        {
-          text: "Shoulder",
-          value: "shoulder",
-        },
-        {
-          text: "Date Measured",
-          value: "created_at",
-        },
-      ],
+      picture: null,
+      picture_url: null,
+      uploading: false,
     };
   },
-  computed: {
-    ...mapGetters({
-      measurements: "account/measurements",
-    }),
-  },
+  computed: {},
 
   methods: {
+    insert_image(e) {
+      this.picture = e.target.files[0];
+      this.picture_url = URL.createObjectURL(this.picture);
+    },
+    upload_image() {
+      this.uploading = true;
+      const storage = getStorage();
+      const storageRef = ref(storage, "ProfilePictures/" + this.picture_url);
+      // 'file' comes from the Blob or File API
+      uploadBytes(storageRef, this.picture).then(() => {
+        getDownloadURL(storageRef).then((downloadURL) => {
+          this.upload_profile_picture({
+            id: this.item.id,
+            profile_picture_url: downloadURL,
+          }).then(() => {
+            alert("Picture Uploaded!");
+            this.uploading = false;
+          });
+        });
+      });
+    },
+
     async open() {
       this.dialog = true;
 
       await this.get_credit_transactions(this.item.id);
       await this.get_item_transactions(this.item.id);
-      await this.get_measurements(this.item.id);
     },
     ...mapActions({
       get_credit_transactions: "account/get_credit_transactions",
       get_item_transactions: "item/get_item_transactions",
-      get_measurements: "account/get_measurements",
+
+      upload_profile_picture: "account/upload_profile_picture",
+      upload_body_improvement_picture:
+        "account/upload_body_improvement_picture",
     }),
 
     formatted_date(item) {
@@ -159,11 +197,11 @@ export default {
       return moment(dateTime).format("MMMM D,YYYY - h:m:s A");
     },
     get_rank(rank) {
-      if (rank == "Minotaur") return { color: "brown", stars: 1 };
-      if (rank == "Pegasus") return { color: "grey", stars: 2 };
-      if (rank == "Phoenix") return { color: "yellow ", stars: 3 };
-      if (rank == "Cerberus") return { color: "red", stars: 4 };
-      if (rank == "Dragon") return { color: "deep-orange accent-3", stars: 5 };
+      if (rank == "Novice") return { color: "brown", stars: 1 };
+      if (rank == "Veteran") return { color: "grey", stars: 2 };
+      if (rank == "Master") return { color: "yellow ", stars: 3 };
+      if (rank == "Legendary") return { color: "red", stars: 4 };
+      if (rank == "Beast") return { color: "deep-orange accent-3", stars: 5 };
     },
   },
 };

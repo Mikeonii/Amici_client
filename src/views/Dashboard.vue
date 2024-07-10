@@ -15,19 +15,29 @@
         >
       </div>
       <attendance-summary-table />
+      <sales-summary-table />
+      <v-row class="mt-4">
+        <v-col><attendance-list-table /></v-col>
+        <v-col><sales-list-table /></v-col>
+      </v-row>
     </div>
   </div>
 </template>
-
 <script>
 import { mapActions, mapGetters } from "vuex";
 
 import AttendanceSummaryTable from "../components/Reports/AttendanceSummaryTable.vue";
 import AttendanceTableView from "../components/AttendanceTableView.vue";
+import AttendanceListTable from "../components/Reports/AttendanceListTable.vue";
+import SalesSummaryTable from "../components/Reports/SalesSummaryTable.vue";
+import SalesListTable from "../components/Reports/SalesListTable.vue";
 export default {
   components: {
     AttendanceSummaryTable,
+    AttendanceListTable,
     AttendanceTableView,
+    SalesSummaryTable,
+    SalesListTable,
   },
   data() {
     return {};

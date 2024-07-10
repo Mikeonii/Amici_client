@@ -66,6 +66,7 @@ export default {
     ...mapActions({
       add_measurement: "account/add_measurement",
     }),
+
     submit() {
       let x = window.confirm("Are you sure you want to proceed?");
       if (x) {
