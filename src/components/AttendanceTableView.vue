@@ -7,7 +7,6 @@
       <v-row class="ml-2">
         <v-col>
           <h3 class="purple--text mt-2">JC FITNESS GYM</h3>
-
           <h3 class="white--text overline mt-n2">Management System</h3>
         </v-col>
         <v-spacer></v-spacer>
@@ -28,9 +27,9 @@
         </v-col>
       </v-row>
     </div>
-    <v-row>
+    <v-row class="mt-n10">
       <v-col>
-        <h2 class="display-4 font-weight-black white--text">
+        <h2 class="font-weight-black white--text" style="font-size: 150px">
           {{ time }}
         </h2>
         <h2 class="display1 white--text">{{ get_date() }}</h2></v-col
@@ -315,7 +314,7 @@ export default {
     },
   },
   mounted() {
-    this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 300);
+    this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 10);
     setInterval(this.clock, 1000);
   },
 };
