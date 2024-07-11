@@ -313,6 +313,9 @@ export default {
       }, this.modalTimeOut);
     },
   },
+  created() {
+    console.log(this.attendances);
+  },
   mounted() {
     this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 10);
     setInterval(this.clock, 1000);
