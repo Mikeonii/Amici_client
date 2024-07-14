@@ -68,9 +68,12 @@ export default {
     },
   },
   actions: {
+    async modify_expiry_dates({ commit }, request) {
+      let response = await axios.put("/modify_expiry_dates", request);
+      commit("EDIT_ACCOUNT", response.data);
+    },
     async upload_profile_picture({ commit }, request) {
       let response = await axios.post("/upload_profile_picture", request);
-
       commit("EDIT_ACCOUNT", response.data);
     },
 
