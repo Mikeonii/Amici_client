@@ -92,6 +92,7 @@ export default {
         { text: "Birthdate", value: "birth_date" },
         { text: "Address", value: "address" },
         { text: "Gender", value: "gender" },
+        { text: "Phone", value: "phone_number" },
         { text: "Card Number", value: "card_no" },
         { text: "Rank", value: "rank" },
         { text: "Credits", value: "credits" },

@@ -27,7 +27,11 @@
             label="Address"
             prepend-icon="mdi-map"
           ></v-text-field>
-
+          <v-text-field
+            v-model="item.phone_number"
+            label="Phone"
+            prepend-icon="mdi-phone"
+          ></v-text-field>
           <v-text-field
             v-model="item.card_no"
             label="Card Number"
