@@ -29,15 +29,9 @@
     </div>
     <v-row class="mt-n10">
       <v-col>
-        <h2 class="font-weight-black white--text" style="font-size: 150px">
-          {{ time }}
-        </h2>
-        <h2 class="display1 white--text">{{ get_date() }}</h2></v-col
-      >
-      <v-col>
-        <h1 class="red--text" v-if="response_data !== ''">
-          <span class="white--text">ERROR: </span>{{ response_data }}
-        </h1>
+        <p class="white--text" style="font-size: 100px">
+          <span class="font-weight-black">JC FITNESS GYM</span> Mgt. System
+        </p>
       </v-col>
     </v-row>
 
@@ -127,7 +121,7 @@
           <!-- 2nd TABLE -->
         </v-col>
         <v-col>
-          <h2 class="white--text">TOP GYM GOERS</h2>
+          <h2 class="white--text">TOP 10 GYM GOERS</h2>
           <v-data-table
             :items="top_gymmers"
             :headers="top_gymmers_header"
@@ -170,12 +164,53 @@
       </v-row>
     </div>
     <v-container class="">
-      <v-dialog v-model="enable_message" width="680">
+      <v-dialog v-model="enable_message" :width="modal_width">
         <v-card :color="cardColor"
-          ><v-card-text class="d-flex justify-center">
+          ><v-card-text class="">
             <h1 class="pa-15 display-1 white--text" style="text-align: center">
               <v-icon color="white" large class="mt-n1">{{ cardIcon }}</v-icon>
               {{ message }}
+
+              <!-- Att Info -->
+              <br />
+              <v-row v-if="att_data.account.name != 'N/A'">
+                <v-col cols="4">
+                  <v-avatar size="250">
+                    <v-img
+                      v-if="att_data.account.profile_picture_url != 'n/a'"
+                      :src="att_data.account.profile_picture_url"
+                      width="100%"
+                    ></v-img>
+                    <v-img
+                      v-else
+                      src="@/assets/jc_logo.jpg"
+                      width="100%"
+                    ></v-img> </v-avatar
+                ></v-col>
+                <v-col>
+                  <div
+                    v-if="att_data.account.name != 'N/A'"
+                    class="mt-8 display-2"
+                    style="text-align: left"
+                  >
+                    <p>
+                      Name: <strong>{{ att_data.account.name }}</strong>
+                    </p>
+                    <p>
+                      Rank: <strong>{{ att_data.account.rank }}</strong>
+                    </p>
+                    <p>
+                      Logged in: <strong>{{ att_data.logged_in }}</strong>
+                    </p>
+                    <p>
+                      Logged in: <strong>{{ att_data.logged_out }}</strong>
+                    </p>
+                    <p>
+                      Total Hours: <strong>{{ att_data.total_hours }}</strong>
+                    </p>
+                  </div></v-col
+                >
+              </v-row>
             </h1>
           </v-card-text></v-card
         ></v-dialog
@@ -197,7 +232,8 @@ import CheckAccountModal from "../components/CustomerUI/CheckAccountModal.vue";
 export default {
   data() {
     return {
-      modalTimeOut: 3000,
+      modal_width: 1200,
+      modalTimeOut: 6000,
       cardIcon: "mdi-check-circle",
       cardColor: "success",
       time: "",
@@ -206,7 +242,15 @@ export default {
       message: "",
       message_color: "primary",
       card_id: "",
-
+      att_data: {
+        account: {
+          name: "N/A",
+          rank: "N/A",
+        },
+        logged_in: "N/A",
+        logged_out: "N/A",
+        total_hours: "N/A",
+      },
       headers: [
         { text: "", value: "action" },
         { text: "Name", value: "account.name" },
@@ -258,7 +302,19 @@ export default {
     insert_attendance() {
       this.add_attendance(this.card_id).then((data) => {
         // console.log(data);
+        var empty_att_data = {
+          account: {
+            profile_picture_url: "N/A",
+            name: "N/A",
+            rank: "N/A",
+          },
+          logged_in: "N/A",
+          logged_out: "N/A",
+          total_hours: "N/A",
+        };
         if (data[1] == "Successfully logged in") {
+          this.modal_width = 1200;
+          this.att_data = data[0];
           this.cardColor = "success";
           this.cardIcon = "mdi-check";
           this.$refs.successAudio.play();
@@ -266,26 +322,34 @@ export default {
           data[1] ==
           "Thank you for choosing JC Fitness Gym. Hope you had a good time!"
         ) {
+          this.modal_width = 1200;
+          this.att_data = data[0];
           this.modalTimeOut = 5000;
           this.cardColor = "success";
           this.cardIcon = "mdi-check";
           this.$refs.thankyouAudio.play();
           this.modalTimeOut = 3000;
         } else if (data[1] == "Account not found") {
+          this.modal_width = 600;
+          this.att_data = empty_att_data;
           this.cardColor = "error";
           this.cardIcon = "mdi-alert";
           this.$refs.notFoundAudio.play();
         } else if (data[1] == "Account already logged in") {
+          this.modal_width = 600;
+          this.att_data = empty_att_data;
           this.cardColor = "warning";
           this.cardIcon = "mdi-alert";
           this.$refs.alreadyLoggedAudio.play();
         } else if (data[1] == "Account Expired") {
+          this.modal_width = 600;
+          this.att_data = empty_att_data;
           this.cardColor = "error";
           this.cardIcon = "mdi-alert";
           this.$refs.expiredAudio.play();
         }
 
-        this.message_modal(data[1]);
+        this.message_modal(data[1], data[0]);
       });
     },
     get_rank(rank) {
@@ -313,12 +377,9 @@ export default {
       }, this.modalTimeOut);
     },
   },
-  created() {
-    console.log(this.attendances);
-  },
+  created() {},
   mounted() {
-    this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 10);
-    setInterval(this.clock, 1000);
+    this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 100);
   },
 };
 </script>

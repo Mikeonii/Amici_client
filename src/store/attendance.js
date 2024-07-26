@@ -16,6 +16,10 @@ export default {
     ADD_ATTENDANCE(state, attendance) {
       state.attendances.unshift(attendance);
     },
+    EDIT_ATTENDANCE(state, attendance) {
+      var index = state.attendances.findIndex((a) => a.id == attendance.id);
+      state.attendances.splice(index, 1, attendance);
+    },
   },
   actions: {
     // get attendances
@@ -41,7 +45,7 @@ export default {
           response.data[0],
           "Thank you for choosing JC Fitness Gym. Hope you had a good time!",
         ];
-        commit("ADD_ATTENDANCE", res[0]);
+        commit("EDIT_ATTENDANCE", res[0]);
         return res;
       }
       // for log in

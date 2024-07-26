@@ -24,7 +24,7 @@
               </tr>
             </tbody>
           </v-simple-table>
-          <v-radio-group row>
+          <v-radio-group row v-model="form.operation">
             <v-radio label="Add" value="add"></v-radio>
             <v-radio label="Subtract" value="subtract"></v-radio>
           </v-radio-group>
