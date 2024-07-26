@@ -33,6 +33,7 @@
               <template v-slot:item.action="{ item }">
                 <div class="d-flex">
                   <account-modal :item="item" />
+                  <modify-expiration-modal :item="item" />
                   <edit-account-modal :item="item" />
                   <v-btn icon @click="print_waiver(item)">
                     <v-icon color="green">mdi-printer</v-icon></v-btn
@@ -64,8 +65,14 @@ import { mapActions, mapGetters } from "vuex";
 import AccountModal from "@/components/Account/AccountModal.vue";
 import AddAccountModal from "@/components/Account/AddAccountModal.vue";
 import EditAccountModal from "@/components/Account/EditAccountModal.vue";
+import ModifyExpirationModal from "../Account/modifyExpirationModal.vue";
 export default {
-  components: { AddAccountModal, EditAccountModal, AccountModal },
+  components: {
+    AddAccountModal,
+    EditAccountModal,
+    AccountModal,
+    ModifyExpirationModal,
+  },
   data() {
     return {
       dialog: false,
@@ -85,6 +92,7 @@ export default {
         { text: "Birthdate", value: "birth_date" },
         { text: "Address", value: "address" },
         { text: "Gender", value: "gender" },
+        { text: "Phone", value: "phone_number" },
         { text: "Card Number", value: "card_no" },
         { text: "Rank", value: "rank" },
         // { text: "Credits", value: "credits" },

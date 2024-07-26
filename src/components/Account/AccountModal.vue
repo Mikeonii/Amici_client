@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn icon color="primary" @click="open">
-      <v-icon>mdi-list-box</v-icon></v-btn
+      <v-icon>mdi-account</v-icon></v-btn
     >
     <v-dialog v-model="dialog" width="850" persistent>
       <v-card>
