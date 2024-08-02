@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="dialog = true" icon><v-icon>mdi-draw-pen</v-icon></v-btn>
+    <v-btn @click="open()" icon><v-icon>mdi-draw-pen</v-icon></v-btn>
     <v-dialog v-model="dialog" width="650" persistent>
       <v-card>
         <v-card-title>Modify Expiration Dates</v-card-title>
@@ -60,6 +60,22 @@
         </v-card-actions></v-card
       ></v-dialog
     >
+    <v-dialog v-model="security" width="400">
+      <v-card>
+        <v-card-title>Security Password</v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="security_answer"
+            prepend-icon="mdi-lock"
+            type="password"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="check">Proceed</v-btn>
+          <v-btn @click="security = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -69,6 +85,9 @@ export default {
   props: ["item"],
   data() {
     return {
+      security_answer: "",
+      security_code: "jazzycarl21",
+      security: false,
       form: {
         id: "",
         column: "",
@@ -81,6 +100,17 @@ export default {
     };
   },
   methods: {
+    check() {
+      if (this.security_answer != this.security_code) {
+        alert("Wrong Password");
+      } else {
+        this.security = false;
+        this.dialog = true;
+      }
+    },
+    open() {
+      this.security = true;
+    },
     submit() {
       this.form.id = this.item.id;
       let x = window.confirm("Are you sure you want to proceed?");

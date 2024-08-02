@@ -121,11 +121,13 @@
           <!-- 2nd TABLE -->
         </v-col>
         <v-col>
-          <h2 class="white--text">TOP 10 GYM GOERS</h2>
+          <h2 class="white--text">TOP 10 GYM-GOERS</h2>
           <v-data-table
             :items="top_gymmers"
             :headers="top_gymmers_header"
             dark
+            :sort-by="['total_attendance_rows', 'formatted_gym_time']"
+            :sort-desc="[true, true]"
             v-if="top_gymmers.length > 0"
           >
             <template v-slot:item.no="{ _, index }">
@@ -157,7 +159,7 @@
               </div>
             </template>
             <template v-slot:item.formatted_gym_time="{ item }">
-              <p>{{ item.total_gym_time / 60 }} Hours</p>
+              <p>{{ Math.floor(item.total_gym_time / 60) }} Hours</p>
             </template>
           </v-data-table>
         </v-col>
@@ -203,7 +205,7 @@
                       Logged in: <strong>{{ att_data.logged_in }}</strong>
                     </p>
                     <p>
-                      Logged in: <strong>{{ att_data.logged_out }}</strong>
+                      Logged out: <strong>{{ att_data.logged_out }}</strong>
                     </p>
                     <p>
                       Total Hours: <strong>{{ att_data.total_hours }}</strong>
@@ -233,7 +235,7 @@ export default {
   data() {
     return {
       modal_width: 1200,
-      modalTimeOut: 6000,
+      modalTimeOut: 10000,
       cardIcon: "mdi-check-circle",
       cardColor: "success",
       time: "",
@@ -324,11 +326,11 @@ export default {
         ) {
           this.modal_width = 1200;
           this.att_data = data[0];
-          this.modalTimeOut = 5000;
+          this.modalTimeOut = 10000;
           this.cardColor = "success";
           this.cardIcon = "mdi-check";
           this.$refs.thankyouAudio.play();
-          this.modalTimeOut = 3000;
+          this.modalTimeOut = 10000;
         } else if (data[1] == "Account not found") {
           this.modal_width = 600;
           this.att_data = empty_att_data;
