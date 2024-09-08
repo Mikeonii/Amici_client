@@ -18,6 +18,7 @@
         </v-col>
         <v-col class="d-flex">
           <check-account-modal />
+          <add-session-modal />
           <v-btn
             class="mb-6 white--text ml-4"
             :color="show_navs ? 'purple' : 'grey'"
@@ -229,6 +230,7 @@ import moment from "moment";
 
 // import accountNotFoundAudio from "@/assets/notFound.wav";
 import CheckAccountModal from "../components/CustomerUI/CheckAccountModal.vue";
+import AddSessionModal from "./addSessionModal.vue";
 export default {
   data() {
     return {
@@ -273,6 +275,7 @@ export default {
   },
   components: {
     CheckAccountModal,
+    AddSessionModal,
   },
   computed: {
     ...mapGetters({

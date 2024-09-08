@@ -43,7 +43,7 @@
                 >
               </div>
 
-              '</v-col
+              </v-col
             >
             <v-col cols="">
               <div class="d-flex">
