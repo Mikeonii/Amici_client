@@ -7,6 +7,7 @@ export default {
     measurements: [],
     item_transactions: [],
     top_gymmers: [],
+    top_gymmers_of_current_month: [],
   },
   getters: {
     accounts(state) {
@@ -24,8 +25,14 @@ export default {
     top_gymmers(state) {
       return state.top_gymmers;
     },
+    top_gymmers_of_current_month(state) {
+      return state.top_gymmers_of_current_month;
+    },
   },
   mutations: {
+    SET_TOP_GYMMERS_OF_CURRENT_MONTH(state, top_gymmers) {
+      state.top_gymmers_of_current_month = top_gymmers;
+    },
     SET_TOP_GYMMERS(state, top_gymmers) {
       state.top_gymmers = top_gymmers;
     },
@@ -85,10 +92,13 @@ export default {
 
       commit("EDIT_ACCOUNT", response.data);
     },
-
     async get_top_gymmers({ commit }) {
       let response = await axios.get("/top_gymmers");
       commit("SET_TOP_GYMMERS", response.data);
+    },
+    async get_top_gymmers_of_current_month({ commit }) {
+      let response = await axios.get("/get_top_gymmer_of_current_month");
+      commit("SET_TOP_GYMMERS_OF_CURRENT_MONTH", response.data);
     },
     // get accounts
     async get_accounts({ commit }) {
@@ -116,17 +126,14 @@ export default {
       let response = await axios.get("/credit_transactions/" + account_id);
       commit("SET_CREDIT_TRANSACTIONS", response.data);
     },
-
     async add_credit_transaction({ commit }, request) {
       let response = await axios.post("/credit_transaction", request);
       commit("ADD_CREDIT", response.data);
     },
-
     async get_item_transactions({ commit }, account_id) {
       let response = await axios.get("/item_transaction/" + account_id);
       commit("SET_ITEM_TRANSACTIONS", response.data);
     },
-
     // BODY MEASUREMENT
     async get_measurements({ commit }, account_id) {
       let response = await axios.get("/measurements/" + account_id);
@@ -136,7 +143,6 @@ export default {
       let response = await axios.get("/measurement/" + account_id);
       commit("SET_MEASUREMENT", response.data);
     },
-
     async add_measurement({ commit }, request) {
       let response = await axios.post("/measurement", request);
       commit("ADD_MEASUREMENT", response.data);
