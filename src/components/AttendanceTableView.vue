@@ -19,6 +19,9 @@
         <v-col class="d-flex">
           <check-account-modal />
           <add-session-modal />
+          <v-btn class="ml-2" @click="show_top_gymmer = true"
+            >Top Gym Goers</v-btn
+          >
           <v-btn
             class="mb-6 white--text ml-4"
             :color="show_navs ? 'purple' : 'grey'"
@@ -51,7 +54,7 @@
     <div class="mt-2">
       <v-row>
         <v-col>
-          <h2 class="white--text">ATTENDANCE LIST</h2>
+          <h2 class="white--text">Attendance List</h2>
           <!-- AUDIO FILES -->
           <div>
             <!-- SUCCESS AUDIO -->
@@ -122,9 +125,12 @@
           <!-- 2nd TABLE -->
         </v-col>
         <v-col>
-          <h2 class="white--text">TOP 10 GYM-GOERS</h2>
+          <h2 class="white--text">
+            Top 10 Gym Goers of the Month
+            <span class="font-weight-light">({{ month }})</span>
+          </h2>
           <v-data-table
-            :items="top_gymmers"
+            :items="top_gymmers_of_current_month"
             :headers="top_gymmers_header"
             dark
             :sort-by="['total_attendance_rows', 'formatted_gym_time']"
@@ -221,6 +227,11 @@
       <p class="caption white--text mt-5 text-center">
         Developed by: Jan Michael Besinga 2024
       </p>
+      <!-- lazy loaded compnents -->
+      <top-gymmers-modal
+        v-if="show_top_gymmer"
+        @close="show_top_gymmer = false"
+      />
     </v-container>
   </v-img>
 </template>
@@ -236,6 +247,7 @@ import AddSessionModal from "./addSessionModal.vue";
 export default {
   data() {
     return {
+      show_top_gymmer: false,
       modal_width: 1200,
       modalTimeOut: 10000,
       cardIcon: "mdi-check-circle",
@@ -278,13 +290,20 @@ export default {
   components: {
     CheckAccountModal,
     AddSessionModal,
+    topGymmersModal: () => import("./topGymmersModal.vue"),
   },
   computed: {
     ...mapGetters({
       show_navs: "auth/show_navs",
       attendances: "attendance/attendances",
       top_gymmers: "account/top_gymmers",
+      top_gymmers_of_current_month: "account/top_gymmers_of_current_month",
     }),
+    month() {
+      let month = moment().format("MMMM");
+      // let year = moment().format("YYYY");
+      return month;
+    },
   },
   methods: {
     ...mapActions({
@@ -292,18 +311,9 @@ export default {
       get_attendances: "attendance/get_attendances",
       add_attendance: "attendance/add_attendance",
       get_top_gymmers: "account/get_top_gymmers",
+      get_top_gymmers_of_current_month:
+        "account/get_top_gymmers_of_current_month",
     }),
-    // format_gym_time(minutes) {
-    //   var hours = minutes / 60;
-    //   var minute = minutes % 60;
-    //   var formatted_hours = hours == 1 ? hours + " hour" : hours + " hours";
-    //   var formatted_minutes =
-    //     minute == 1 ? minute + " minute" : minute + " minutes";
-
-    //   // Build the final formatted string
-    //   var formatted_string = formatted_hours + " and " + formatted_minutes;
-    //   return formatted_string;
-    // },
     insert_attendance() {
       this.add_attendance(this.card_id).then((data) => {
         // console.log(data);
@@ -385,6 +395,8 @@ export default {
   created() {},
   mounted() {
     this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 100);
+    if (this.top_gymmers_of_current_month.length <= 0)
+      this.get_top_gymmers_of_current_month();
   },
 };
 </script>

@@ -40,6 +40,7 @@
           <v-text-field
             label="Search "
             prepend-icon="mdi-magnify"
+            v-model="search"
           ></v-text-field>
           <v-data-table
             :search="search"

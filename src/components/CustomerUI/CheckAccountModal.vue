@@ -4,7 +4,7 @@
       <v-icon> mdi-account </v-icon>
       Check Account
     </v-btn>
-    <v-dialog v-model="dialog" width="1300">
+    <v-dialog v-model="dialog" width="1500">
       <v-card>
         <v-card-text class="pa-2">
           <div class="pa-8 mt-n5">
