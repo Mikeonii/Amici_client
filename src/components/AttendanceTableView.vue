@@ -132,8 +132,6 @@
             :items="top_gymmers_of_current_month"
             :headers="top_gymmers_header"
             dark
-            :sort-by="['total_attendance_rows', 'formatted_gym_time']"
-            :sort-desc="[true, true]"
             v-if="top_gymmers.length > 0"
           >
             <template v-slot:item.no="{ _, index }">
