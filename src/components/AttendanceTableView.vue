@@ -126,12 +126,15 @@
         </v-col>
         <v-col>
           <h2 class="white--text">
-            Top 10 Gym-Goers of the Month ({{ month }})
+            Top 10 Gym Goers of the Month
+            <span class="font-weight-light">({{ month }})</span>
           </h2>
           <v-data-table
             :items="top_gymmers_of_current_month"
             :headers="top_gymmers_header"
             dark
+            :sort-by="['total_attendance_rows', 'formatted_gym_time']"
+            :sort-desc="[true, true]"
             v-if="top_gymmers.length > 0"
           >
             <template v-slot:item.no="{ _, index }">
@@ -279,7 +282,7 @@ export default {
         { text: "Rank", value: "rank" },
         { text: "Registered", value: "created_at" },
         { text: "Expiration Date", value: "expiry_date" },
-        { text: "Total Att. This Month", value: "attendances_count" },
+        { text: "Total Att. Rows", value: "total_attendance_rows" },
         { text: "Total Gym Time", value: "formatted_gym_time" },
       ],
     };
@@ -366,10 +369,11 @@ export default {
     },
     get_rank(rank) {
       if (rank == "Novice") return { color: "brown", stars: 1 };
-      if (rank == "Veteran") return { color: "grey", stars: 2 };
-      if (rank == "Master") return { color: "yellow ", stars: 3 };
-      if (rank == "Legendary") return { color: "red", stars: 4 };
-      if (rank == "Beast") return { color: "deep-orange accent-3", stars: 5 };
+      if (rank == "Lifter") return { color: "blue", stars: 2 };
+      if (rank == "Veteran") return { color: "grey", stars: 3 };
+      if (rank == "Master") return { color: "yellow ", stars: 4 };
+      if (rank == "Legendary") return { color: "red", stars: 5 };
+      if (rank == "Beast") return { color: "deep-orange accent-3", stars: 6 };
     },
     get_date() {
       let date = moment().format("MMMM DD, YYYY");
