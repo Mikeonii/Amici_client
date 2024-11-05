@@ -126,8 +126,9 @@
         </v-col>
         <v-col>
           <h2 class="white--text">
-            Top 10 Gym Goers of the Month
+            Top 10 Gym-Goers of the Month
             <span class="font-weight-light">({{ month }})</span>
+            <!-- <span class="font-weight-light">(October)</span> -->
           </h2>
           <v-data-table
             :items="top_gymmers_of_current_month"
@@ -282,7 +283,7 @@ export default {
         { text: "Rank", value: "rank" },
         { text: "Registered", value: "created_at" },
         { text: "Expiration Date", value: "expiry_date" },
-        { text: "Total Att. Rows", value: "total_attendance_rows" },
+        { text: "Total Att. Rows", value: "attendances_count" },
         { text: "Total Gym Time", value: "formatted_gym_time" },
       ],
     };

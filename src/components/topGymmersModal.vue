@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" width="1200" persistent>
       <v-card>
-        <v-card-title>All Time Top Gym Goers</v-card-title>
+        <v-card-title>All Time Top Gym-Goers</v-card-title>
         <v-card-text>
           <v-data-table
             :items="top_gymmers"
