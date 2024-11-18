@@ -42,9 +42,7 @@
                   Upload Picture</v-btn
                 >
               </div>
-
-              </v-col
-            >
+            </v-col>
             <v-col cols="">
               <div class="d-flex">
                 <h2 class="display-2 font-weight-black">{{ item.name }}</h2>
@@ -198,10 +196,11 @@ export default {
     },
     get_rank(rank) {
       if (rank == "Novice") return { color: "brown", stars: 1 };
-      if (rank == "Veteran") return { color: "grey", stars: 2 };
-      if (rank == "Master") return { color: "yellow ", stars: 3 };
-      if (rank == "Legendary") return { color: "red", stars: 4 };
-      if (rank == "Beast") return { color: "deep-orange accent-3", stars: 5 };
+      if (rank == "Lifter") return { color: "blue", stars: 2 };
+      if (rank == "Veteran") return { color: "grey", stars: 3 };
+      if (rank == "Master") return { color: "yellow ", stars: 4 };
+      if (rank == "Legendary") return { color: "red", stars: 5 };
+      if (rank == "Beast") return { color: "deep-orange accent-3", stars: 6 };
     },
   },
 };
