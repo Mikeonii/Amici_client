@@ -96,8 +96,10 @@ export default {
       let response = await axios.get("/top_gymmers");
       commit("SET_TOP_GYMMERS", response.data);
     },
-    async get_top_gymmers_of_current_month({ commit }) {
-      let response = await axios.get("/get_top_gymmer_of_current_month");
+    async get_top_gymmers_of_the_month({ commit }, request) {
+      let response = await axios.get(
+        "/get_top_gymmer_of_the_month/" + request.month + "/" + request.year
+      );
       commit("SET_TOP_GYMMERS_OF_CURRENT_MONTH", response.data);
     },
     // get accounts

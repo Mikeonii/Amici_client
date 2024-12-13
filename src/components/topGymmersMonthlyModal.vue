@@ -1,19 +1,32 @@
 <template>
   <div>
-    <v-dialog v-model="dialog" width="1300" persistent>
-      <v-card class="pa-5">
-        <v-card-title
-          ><h2>All Time Top Gym-Goers</h2>
-          <v-spacer></v-spacer>
-          <top-gymmers-monthly-modal />
-        </v-card-title>
+    <v-btn @click="dialog = true">Monthly Top Gym-Goers</v-btn>
+    <v-dialog v-model="dialog" width="900" persistent>
+      <v-card>
+        <v-card-title>Top Monthly Gym-Goers</v-card-title>
         <v-card-text>
-          <v-text-field label="Search" v-model="search"></v-text-field>
+          <div class="d-flex">
+            <h3 class="mr-4 mt-6">Search for Month and Year</h3>
+            <v-select
+              class="mr-5"
+              :items="months"
+              label="Month"
+              v-model="selectedMonth"
+            ></v-select>
+            <v-select
+              :items="[2024, 2025, 2026]"
+              label="Year"
+              v-model="selectedYear"
+            ></v-select>
+            <v-btn class="ml-5" color="primary" @click="search">Search</v-btn>
+          </div>
+
           <v-data-table
-            :search="search"
-            :items="top_gymmers"
-            :headers="top_gymmers_header"
-            v-if="top_gymmers.length > 0"
+            :items="topGymGoers"
+            :headers="headers"
+            :sort-by="['attendances_count']"
+            :sort-desc="[true]"
+            v-if="topGymGoers.length > 0"
           >
             <template v-slot:item.no="{ _, index }">
               <p>{{ index + 1 }}</p>
@@ -47,7 +60,7 @@
               </div>
             </template>
             <template v-slot:item.formatted_gym_time="{ item }">
-              <p>{{ item.total_gym_time / 60 }} Hours</p>
+              <p>{{ Math.floor(item.total_gym_time / 60) }} Hours</p>
             </template>
           </v-data-table>
         </v-card-text>
@@ -55,7 +68,7 @@
           <v-btn @click="submit" color="primary" :loading="button_loading"
             >Submit</v-btn
           >
-          <v-btn @click="$emit('close')">Close</v-btn>
+          <v-btn @click="dialog = false">Close</v-btn>
         </v-card-actions></v-card
       ></v-dialog
     >
@@ -63,35 +76,27 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import TopGymmersMonthlyModal from "./topGymmersMonthlyModal.vue";
+import axios from "axios";
 export default {
-  components: { TopGymmersMonthlyModal },
   data() {
     return {
-      dialog: true,
+      months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      selectedMonth: "",
+      selectedYear: "",
+      dialog: false,
       button_loading: false,
-      search: "",
-      top_gymmers_header: [
+      topGymGoers: [],
+      headers: [
         { text: "No.", value: "no" },
         { text: "", value: "action" },
         { text: "Name", value: "name" },
         { text: "Rank", value: "rank" },
-        { text: "Registered", value: "created_at" },
-        { text: "Expiration Date", value: "expiry_date" },
-        { text: "Total Att. Rows", value: "total_attendance_rows" },
+        { text: "Total Att. Rows", value: "attendances_count" },
         { text: "Total Gym Time", value: "formatted_gym_time" },
       ],
     };
   },
-  computed: {
-    ...mapGetters({ top_gymmers: "account/top_gymmers" }),
-  },
-
   methods: {
-    ...mapActions({
-      get_top_gymmers: "account/get_top_gymmers",
-    }),
     get_rank(rank) {
       if (rank == "Novice") return { color: "brown", stars: 1 };
       if (rank == "Lifter") return { color: "blue", stars: 2 };
@@ -100,12 +105,18 @@ export default {
       if (rank == "Legendary") return { color: "red", stars: 5 };
       if (rank == "Beast") return { color: "deep-orange accent-3", stars: 6 };
     },
+    async search() {
+      let response = await axios.get(
+        "/get_top_gymmer_of_the_month/" +
+          this.selectedMonth +
+          "/" +
+          this.selectedYear
+      );
+      this.topGymGoers = response.data;
+    },
     submit() {
       return;
     },
-  },
-  created() {
-    if (this.top_gymmers.length <= 0) this.get_top_gymmers();
   },
 };
 </script>

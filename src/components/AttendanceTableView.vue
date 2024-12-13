@@ -20,7 +20,7 @@
           <check-account-modal />
           <add-session-modal />
           <v-btn class="ml-2" @click="show_top_gymmer = true"
-            >Top Gym Goers</v-btn
+            >Top Gym-Goers</v-btn
           >
           <v-btn
             class="mb-6 white--text ml-4"
@@ -94,10 +94,12 @@
             <template v-slot:item.action="{ item }">
               <div class="pa-2">
                 <v-avatar size="40" color="grey darken-3">
-                  <h2 v-if="!item.account.profile_picture_url">
+                  <h2
+                    v-if="item.account.profile_picture_url == 'n/a'"
+                    class="white--text"
+                  >
                     {{ item.account.name.charAt(0) }}
                   </h2>
-
                   <v-img
                     v-else
                     :src="item.account.profile_picture_url"
@@ -127,8 +129,8 @@
         <v-col>
           <h2 class="white--text">
             Top 10 Gym-Goers of the Month
-            <!-- <span class="font-weight-light">({{ month }})</span> -->
-            <span class="font-weight-light">(October)</span>
+            <span class="font-weight-light">({{ month }})</span>
+            <!-- <span class="font-weight-light">(October)</span> -->
           </h2>
           <v-data-table
             :items="top_gymmers_of_current_month"
@@ -144,7 +146,10 @@
             <template v-slot:item.action="{ item }">
               <div class="pa-2">
                 <v-avatar size="40" color="grey darken-3">
-                  <h2 v-if="!item.profile_picture_url">
+                  <h2
+                    v-if="item.profile_picture_url == 'n/a'"
+                    class="white--text"
+                  >
                     {{ item.name.charAt(0) }}
                   </h2>
                   <v-img
@@ -185,15 +190,16 @@
               <br />
               <v-row v-if="att_data.account.name != 'N/A'">
                 <v-col cols="4">
-                  <v-avatar size="250">
-                    <v-img
-                      v-if="att_data.account.profile_picture_url != 'n/a'"
-                      :src="att_data.account.profile_picture_url"
-                      width="100%"
-                    ></v-img>
+                  <v-avatar size="40" color="grey darken-3">
+                    <h2
+                      v-if="item.profile_picture_url == 'n/a'"
+                      class="white--text"
+                    >
+                      {{ item.name.charAt(0) }}
+                    </h2>
                     <v-img
                       v-else
-                      src="@/assets/jc_logo.jpg"
+                      :src="item.profile_picture_url"
                       width="100%"
                     ></v-img> </v-avatar
                 ></v-col>
@@ -312,8 +318,7 @@ export default {
       get_attendances: "attendance/get_attendances",
       add_attendance: "attendance/add_attendance",
       get_top_gymmers: "account/get_top_gymmers",
-      get_top_gymmers_of_current_month:
-        "account/get_top_gymmers_of_current_month",
+      get_top_gymmers_of_the_month: "account/get_top_gymmers_of_the_month",
     }),
     insert_attendance() {
       this.add_attendance(this.card_id).then((data) => {
@@ -394,11 +399,19 @@ export default {
       }, this.modalTimeOut);
     },
   },
-  created() {},
+  created() {
+    var current_month = moment().month();
+    var current_year = moment().year();
+    var date = {
+      month: current_month,
+      year: current_year,
+    };
+    console.log(date);
+    if (this.top_gymmers_of_current_month.length <= 0)
+      this.get_top_gymmers_of_the_month(date);
+  },
   mounted() {
     this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 100);
-    if (this.top_gymmers_of_current_month.length <= 0)
-      this.get_top_gymmers_of_current_month();
   },
 };
 </script>
