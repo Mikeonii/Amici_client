@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <h3>Attendance List Table</h3>
+    <v-row class="mb-2">
+      <v-col> <h3>Attendance List Table</h3></v-col>
+    </v-row>
     <v-data-table :items="attendances" :headers="headers"> </v-data-table>
   </v-container>
 </template>

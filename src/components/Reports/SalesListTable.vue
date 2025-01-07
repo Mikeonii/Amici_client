@@ -1,14 +1,20 @@
 <template>
   <v-container>
-    <h3>Sales List Table</h3>
+    <v-row class="mb-2">
+      <v-col><h3>Sales List Table</h3></v-col>
+      <v-spacer></v-spacer>
+      <v-col>
+        <daily-sales-report-modal />
+      </v-col>
+    </v-row>
     <v-data-table :items="sales" :headers="headers"> </v-data-table>
   </v-container>
 </template>
-
 <script>
 import axios from "axios";
-// import { mapActions, mapGetters } from "vuex";
+import dailySalesReportModal from "./dailySalesReportModal.vue";
 export default {
+  components: { dailySalesReportModal },
   data() {
     return {
       sales: [],
