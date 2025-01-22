@@ -65,9 +65,6 @@
           </v-data-table>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="submit" color="primary" :loading="button_loading"
-            >Submit</v-btn
-          >
           <v-btn @click="dialog = false">Close</v-btn>
         </v-card-actions></v-card
       ></v-dialog

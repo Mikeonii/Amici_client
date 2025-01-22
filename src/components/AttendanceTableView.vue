@@ -403,12 +403,13 @@ export default {
     var current_month = moment().month();
     var current_year = moment().year();
     var date = {
-      month: current_month,
+      month: current_month + 1,
       year: current_year,
     };
     console.log(date);
     if (this.top_gymmers_of_current_month.length <= 0)
       this.get_top_gymmers_of_the_month(date);
+    console.log("triggered top gymmers of this month", date);
   },
   mounted() {
     this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 100);
