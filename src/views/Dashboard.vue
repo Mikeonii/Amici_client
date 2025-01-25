@@ -18,6 +18,7 @@
       <sales-summary-table />
       <v-row class="mt-4">
         <v-col><attendance-list-table /></v-col>
+        <!-- test change -->
         <v-col><sales-list-table /></v-col>
       </v-row>
     </div>
