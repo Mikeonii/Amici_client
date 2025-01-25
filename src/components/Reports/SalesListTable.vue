@@ -4,6 +4,7 @@
       <v-col><h3>Sales List Table</h3></v-col>
       <v-spacer></v-spacer>
       <v-col>
+        <!-- test change -->
         <daily-sales-report-modal />
       </v-col>
     </v-row>
