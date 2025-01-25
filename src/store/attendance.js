@@ -26,9 +26,6 @@ export default {
     async get_attendances({ commit }) {
       let response = await axios.get("/attendances");
       commit("SET_ATTENDANCES", response.data);
-
-      let response1 = await axios.get("/sessions");
-      console.log("response1", response1.data);
     },
     async add_attendance({ commit }, card_no) {
       var res;

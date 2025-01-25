@@ -17,7 +17,6 @@ import { GChart } from "vue-google-charts/legacy";
 export default {
   components: { GChart },
   data() {
-    // TODO: finish generating summary
     return {
       ready: true,
       daily_attendance_summary: [],
@@ -32,7 +31,6 @@ export default {
     ...mapActions({}),
     async get_attendance_summary() {
       let response = await axios.get("get_attendance_summary");
-      console.log(response.data);
       this.daily_attendance_summary = response.data;
     },
   },

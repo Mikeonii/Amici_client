@@ -31,7 +31,7 @@ export default {
     ...mapActions({}),
     async get_attendance_summary() {
       let response = await axios.get("/get_sales_summary");
-      console.log(response.data);
+      console.log("sales summary", response.data);
       this.sales_summary = response.data;
     },
   },

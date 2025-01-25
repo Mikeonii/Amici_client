@@ -48,6 +48,7 @@
         color="white"
         class="white--text"
         v-model="card_id"
+        ref="textField"
       ></v-text-field>
     </div>
 
@@ -179,58 +180,6 @@
       </v-row>
     </div>
     <v-container class="">
-      <v-dialog v-model="enable_message" :width="modal_width">
-        <v-card :color="cardColor"
-          ><v-card-text class="">
-            <h1 class="pa-15 display-1 white--text" style="text-align: center">
-              <v-icon color="white" large class="mt-n1">{{ cardIcon }}</v-icon>
-              {{ message }}
-
-              <!-- Att Info -->
-              <br />
-              <v-row v-if="att_data.account.name != 'N/A'">
-                <v-col cols="4">
-                  <v-avatar size="40" color="grey darken-3">
-                    <h2
-                      v-if="item.profile_picture_url == 'n/a'"
-                      class="white--text"
-                    >
-                      {{ item.name.charAt(0) }}
-                    </h2>
-                    <v-img
-                      v-else
-                      :src="item.profile_picture_url"
-                      width="100%"
-                    ></v-img> </v-avatar
-                ></v-col>
-                <v-col>
-                  <div
-                    v-if="att_data.account.name != 'N/A'"
-                    class="mt-8 display-2"
-                    style="text-align: left"
-                  >
-                    <p>
-                      Name: <strong>{{ att_data.account.name }}</strong>
-                    </p>
-                    <p>
-                      Rank: <strong>{{ att_data.account.rank }}</strong>
-                    </p>
-                    <p>
-                      Logged in: <strong>{{ att_data.logged_in }}</strong>
-                    </p>
-                    <p>
-                      Logged out: <strong>{{ att_data.logged_out }}</strong>
-                    </p>
-                    <p>
-                      Total Hours: <strong>{{ att_data.total_hours }}</strong>
-                    </p>
-                  </div></v-col
-                >
-              </v-row>
-            </h1>
-          </v-card-text></v-card
-        ></v-dialog
-      >
       <p class="caption white--text mt-5 text-center">
         Developed by: Jan Michael Besinga 2024
       </p>
@@ -238,6 +187,12 @@
       <top-gymmers-modal
         v-if="show_top_gymmer"
         @close="show_top_gymmer = false"
+      />
+      <message-modal
+        v-if="enable_message_modal"
+        :message="message"
+        :att_data="att_data"
+        :modal_info="modal_info"
       />
     </v-container>
   </v-img>
@@ -257,23 +212,13 @@ export default {
       show_top_gymmer: false,
       modal_width: 1200,
       modalTimeOut: 10000,
-      cardIcon: "mdi-check-circle",
-      cardColor: "success",
-      time: "",
+      att_data: [],
+      modal_info: {},
       response_data: "",
-      enable_message: false,
+      enable_message_modal: false,
       message: "",
       message_color: "primary",
       card_id: "",
-      att_data: {
-        account: {
-          name: "N/A",
-          rank: "N/A",
-        },
-        logged_in: "N/A",
-        logged_out: "N/A",
-        total_hours: "N/A",
-      },
       headers: [
         { text: "", value: "action" },
         { text: "Name", value: "account.name" },
@@ -298,6 +243,7 @@ export default {
     CheckAccountModal,
     AddSessionModal,
     topGymmersModal: () => import("./topGymmersModal.vue"),
+    messageModal: () => import("./messageModal.vue"),
   },
   computed: {
     ...mapGetters({
@@ -322,55 +268,65 @@ export default {
     }),
     insert_attendance() {
       this.add_attendance(this.card_id).then((data) => {
-        // console.log(data);
-        var empty_att_data = {
-          account: {
-            profile_picture_url: "N/A",
-            name: "N/A",
-            rank: "N/A",
-          },
-          logged_in: "N/A",
-          logged_out: "N/A",
-          total_hours: "N/A",
+        console.log("attendance data", data);
+        var att_data = data[0];
+        var message = data[1];
+        var success_modal_time_out = 10000;
+        var error_modal_time_out = 2000;
+        // this will be passed as props in messageModal.vue
+        var modal_info = {
+          modal_width: 0,
+          card_color: "",
+          card_icon: "",
         };
-        if (data[1] == "Successfully logged in") {
-          this.modal_width = 1200;
-          this.att_data = data[0];
-          this.cardColor = "success";
-          this.cardIcon = "mdi-check";
+        // set variables and values
+        // var empty_att_data = {
+        //   account: {
+        //     profile_picture_url: "N/A",
+        //     name: "N/A",
+        //     rank: "N/A",
+        //   },
+        //   logged_in: "N/A",
+        //   logged_out: "N/A",
+        //   total_hours: "N/A",
+        // };
+        if (message == "Successfully logged in") {
+          modal_info.modal_width = 1200;
+          modal_info.card_color = "success";
+          modal_info.card_icon = "mdi-check";
+          this.modal_time_out = success_modal_time_out;
           this.$refs.successAudio.play();
         } else if (
-          data[1] ==
+          message ==
           "Thank you for choosing JC Fitness Gym. Hope you had a good time!"
         ) {
-          this.modal_width = 1200;
-          this.att_data = data[0];
-          this.modalTimeOut = 10000;
-          this.cardColor = "success";
-          this.cardIcon = "mdi-check";
+          modal_info.modal_width = 1200;
+          modal_info.modal_time_out = 10000;
+          modal_info.card_color = "success";
+          modal_info.card_icon = "mdi-check";
+          this.modal_time_out = success_modal_time_out;
           this.$refs.thankyouAudio.play();
-          this.modalTimeOut = 10000;
-        } else if (data[1] == "Account not found") {
-          this.modal_width = 600;
-          this.att_data = empty_att_data;
-          this.cardColor = "error";
-          this.cardIcon = "mdi-alert";
+        } else if (message == "Account not found") {
+          modal_info.modal_width = 600;
+          modal_info.card_color = "error";
+          modal_info.card_icon = "mdi-alert";
+          this.modal_time_out = error_modal_time_out;
           this.$refs.notFoundAudio.play();
-        } else if (data[1] == "Account already logged in") {
-          this.modal_width = 600;
-          this.att_data = empty_att_data;
-          this.cardColor = "warning";
-          this.cardIcon = "mdi-alert";
+        } else if (message == "Account already logged in") {
+          modal_info.modal_width = 600;
+          modal_info.card_color = "warning";
+          modal_info.card_icon = "mdi-alert";
+          this.modal_time_out = error_modal_time_out;
           this.$refs.alreadyLoggedAudio.play();
-        } else if (data[1] == "Account Expired") {
-          this.modal_width = 600;
-          this.att_data = empty_att_data;
-          this.cardColor = "error";
-          this.cardIcon = "mdi-alert";
+        } else if (message == "Account Expired") {
+          modal_info.modal_width = 600;
+          modal_info.card_color = "error";
+          modal_info.card_icon = "mdi-alert";
+          this.modal_time_out = error_modal_time_out;
           this.$refs.expiredAudio.play();
         }
-
-        this.message_modal(data[1], data[0]);
+        // trigger message modal
+        this.message_modal(att_data, message, modal_info);
       });
     },
     get_rank(rank) {
@@ -385,18 +341,21 @@ export default {
       let date = moment().format("MMMM DD, YYYY");
       return date;
     },
-    clock() {
-      var time = moment().format("h:m:s A");
-      this.time = time;
-    },
-    message_modal(message) {
-      this.enable_message = true;
+
+    message_modal(att_data, message, modal_info) {
+      this.enable_message_modal = true;
       this.message = message;
-      this.message_color = "red";
+      this.att_data = att_data;
+      this.modal_info = modal_info;
+
       setTimeout(() => {
-        this.enable_message = false;
+        this.enable_message_modal = false;
         this.card_id = "";
-      }, this.modalTimeOut);
+        // Re-focus the text field
+        this.$nextTick(() => {
+          this.$refs.textField.focus();
+        });
+      }, this.modal_time_out);
     },
   },
   created() {
@@ -406,12 +365,13 @@ export default {
       month: current_month + 1,
       year: current_year,
     };
-    console.log(date);
+
     if (this.top_gymmers_of_current_month.length <= 0)
       this.get_top_gymmers_of_the_month(date);
     console.log("triggered top gymmers of this month", date);
   },
   mounted() {
+    // to delay the input of strings in textfield
     this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 100);
   },
 };
