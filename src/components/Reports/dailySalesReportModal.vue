@@ -45,6 +45,7 @@ export default {
       selectedYear: "",
       dialog: false,
       button_loading: false,
+      test: "",
     };
   },
   computed: {
