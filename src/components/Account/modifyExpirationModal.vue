@@ -60,36 +60,23 @@
         </v-card-actions></v-card
       ></v-dialog
     >
-    <v-dialog v-model="security" width="400">
-      <v-card>
-        <v-card-title>Security Password</v-card-title>
-        <v-card-text>
-          <v-text-field
-            v-model="security_answer"
-            prepend-icon="mdi-lock"
-            type="password"
-          ></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="check">Proceed</v-btn>
-          <v-btn @click="security = false">Close</v-btn>
-          <v-spacer></v-spacer>
-          <p class="caption">modifyExpirationModal.vue</p>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- lazy components -->
+    <security-modal
+      v-if="enable_security"
+      @passed="open_dialog"
+      @close="enable_security = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 export default {
+  components: { securityModal: () => import("../securityModal.vue") },
   props: ["item"],
   data() {
     return {
-      security_answer: "",
-      security_code: "jazzycarl21",
-      security: false,
+      enable_security: false,
       form: {
         id: "",
         column: "",
@@ -102,16 +89,12 @@ export default {
     };
   },
   methods: {
-    check() {
-      if (this.security_answer != this.security_code) {
-        alert("Wrong Password");
-      } else {
-        this.security = false;
-        this.dialog = true;
-      }
+    open_dialog() {
+      this.enable_security = false;
+      this.dialog = true;
     },
     open() {
-      this.security = true;
+      this.enable_security = true;
     },
     submit() {
       this.form.id = this.item.id;

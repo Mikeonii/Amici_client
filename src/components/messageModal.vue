@@ -64,7 +64,7 @@ export default {
       default: "N/A",
     },
     att_data: {
-      type: Array,
+      type: Object,
       default: () => [],
     },
     modal_info: {

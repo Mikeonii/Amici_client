@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="dialog = true" color="yellow">Sales</v-btn>
+    <v-btn @click="verify" color="yellow">Sales</v-btn>
     <v-dialog v-model="dialog" width="800" persistent>
       <v-card>
         <v-card-title><h3>Daily Sales</h3></v-card-title>
@@ -33,14 +33,25 @@
         </v-card-actions></v-card
       ></v-dialog
     >
+    <!-- lazy components -->
+    <security-modal
+      v-if="enable_security"
+      @passed="open_dialog"
+      @close="enable_security = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+
 export default {
+  components: {
+    securityModal: () => import("@/components/securityModal.vue"),
+  },
   data() {
     return {
+      enable_security: "",
       selectedMonth: "",
       selectedYear: "",
       dialog: false,
@@ -54,6 +65,14 @@ export default {
     }),
   },
   methods: {
+    verify() {
+      console.log("triggered");
+      this.enable_security = true;
+    },
+    open_dialog() {
+      this.enable_security = false;
+      this.dialog = true;
+    },
     async submit() {
       let x = window.confirm("Are you sure you want to proceed?");
       if (x) {

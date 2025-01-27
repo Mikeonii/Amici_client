@@ -4,70 +4,47 @@
       <v-container class="mt-15">
         <v-container class="fill-height mt-13" fluid>
           <v-row align="center" justify="center">
-            <v-col cols="15" sm="8" md="8">
-              <v-card class="elevation-12 rounded-l" max-width="">
-                <v-row>
-                  <v-col class="grey darken-4" cols="6">
-                    <v-container class="mt-12 mb-15">
-                      <div class="d-flex justify-center">
-                        <v-img
-                          class=""
-                          src="@/assets/jc_logo.jpg"
-                          max-width="100%"
-                        ></v-img>
-                      </div>
-                    </v-container>
-                  </v-col>
-                  <v-col cols="">
-                    <div class="mt-10 mr-11 ml-5 text-center">
-                      <h1 class="grey--text">Sign in here</h1>
-                      <br />
-                      <v-form ref="form">
-                        <v-text-field
-                          class="rounded-xl"
-                          prepend-icon="mdi-account-outline"
-                          label="Username"
-                          placeholder="Enter your username"
-                          filled
-                          v-model="form.username"
-                        ></v-text-field>
-                        <v-text-field
-                          type="password"
-                          class="rounded-xl"
-                          prepend-icon="mdi-lock-outline"
-                          label="Password"
-                          placeholder="Enter your password"
-                          filled
-                          v-model="form.password"
-                        ></v-text-field>
-                      </v-form>
-                      <v-btn
-                        rounded
-                        elevation="2"
-                        color="black"
-                        class="mr-2 white--text"
-                        @click="submit()"
-                        :loading="loading"
-                        >Login</v-btn
-                      >
-                      <v-btn
-                        rounded
-                        elevation="2"
-                        color="purple accent-4"
-                        class="white--text"
-                        @click="reset"
-                        >Reset</v-btn
-                      >
-                      <p class="caption mt-5">Forgot your password?</p>
-                      <v-divider class="mt-"></v-divider>
-                      <p class="caption grey--text text--lighten-1 mt-5">
-                        Powered by: JMBComputers | Version 2.0
-                      </p>
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
+            <v-card class="elevation-12 rounded-l" max-width="800">
+              <div class="mt-10 mr-11 ml-5 text-center">
+                <h1 class="grey--text">Sign in here</h1>
+                <br />
+                <v-form ref="form">
+                  <v-text-field
+                    class="rounded-xl"
+                    prepend-icon="mdi-account-outline"
+                    label="Username"
+                    placeholder="Enter your username"
+                    filled
+                    v-model="form.username"
+                  ></v-text-field>
+                  <v-text-field
+                    type="password"
+                    class="rounded-xl"
+                    prepend-icon="mdi-lock-outline"
+                    label="Password"
+                    placeholder="Enter your password"
+                    filled
+                    v-model="form.password"
+                  ></v-text-field>
+                </v-form>
+                <v-btn
+                  rounded
+                  elevation="2"
+                  color="black"
+                  class="mr-2 white--text"
+                  @click="submit()"
+                  :loading="loading"
+                  >Login</v-btn
+                >
+                <v-btn rounded elevation="2" color="" @click="reset"
+                  >Reset</v-btn
+                >
+
+                <p class="caption grey--text text--lighten-1 mt-5">
+                  Powered by: JMBComputers | Version 2.0
+                </p>
+              </div>
+            </v-card>
           </v-row>
         </v-container>
       </v-container>

@@ -8,8 +8,8 @@
         <h1 class="">Welcome to Dashboard</h1>
         <v-spacer></v-spacer>
         <v-btn
-          class="mb-6 white--text"
-          :color="show_navs ? 'purple' : 'grey'"
+          class="mb-6"
+          :color="show_navs ? this.app_settings.app_color : 'grey'"
           @click="toggle_navs"
           >{{ show_navs == true ? "Start" : "Exit" }}</v-btn
         >
@@ -49,6 +49,7 @@ export default {
       show_navs: "auth/show_navs",
       attendances: "attendance/attendances",
       top_gymmers: "account/top_gymmers",
+      app_settings: "auth/app_settings",
     }),
   },
   methods: {

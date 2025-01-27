@@ -1,12 +1,19 @@
 <template>
-  <v-img src="@/assets/banner.jpg" width="" height="%" class="pa-9">
+  <v-img
+    :src="require(`@/assets/${this.app_settings.app_bg}`)"
+    width=""
+    height="%"
+    class="pa-9"
+  >
     <div class="d-flex">
       <v-avatar size="62">
-        <img src="@/assets/jc_logo.jpg" />
+        <img :src="require(`@/assets/${this.app_settings.app_logo}`)" />
       </v-avatar>
       <v-row class="ml-2">
         <v-col>
-          <h3 class="purple--text mt-2">JC FITNESS GYM</h3>
+          <h3 :class="`${this.app_settings.app_color}--text mt-2`">
+            {{ app_settings.app_name }}
+          </h3>
           <h3 class="white--text overline mt-n2">Management System</h3>
         </v-col>
         <v-spacer></v-spacer>
@@ -34,7 +41,8 @@
     <v-row class="mt-n10">
       <v-col>
         <p class="white--text" style="font-size: 100px">
-          <span class="font-weight-black">JC FITNESS GYM</span> Mgt. System
+          <span class="font-weight-black">{{ app_settings.app_name }}</span>
+          Mgt. System
         </p>
       </v-col>
     </v-row>
@@ -60,28 +68,52 @@
           <div>
             <!-- SUCCESS AUDIO -->
             <audio controls ref="successAudio" hidden>
-              <source src="@/assets/success.wav" type="audio/wav" />
+              <source
+                :src="
+                  require(`@/assets/${this.app_settings.app_audio_folder}/success.mp3`)
+                "
+                type="audio/mp3"
+              />
               Your browser does not support the audio element.
             </audio>
             <!-- NOT FOUND AUDIO -->
             <audio controls ref="notFoundAudio" hidden>
-              <source src="@/assets/notFound.wav" type="audio/wav" />
+              <source
+                :src="
+                  require(`@/assets/${this.app_settings.app_audio_folder}/notFound.mp3`)
+                "
+                type="audio/mp3"
+              />
               Your browser does not support the audio element.
             </audio>
             <!-- ALREADY LOGGED IN AUDIO -->
             <audio controls ref="alreadyLoggedAudio" hidden>
-              <source src="@/assets/alreadyLogged.wav" type="audio/wav" />
+              <source
+                :src="
+                  require(`@/assets/${this.app_settings.app_audio_folder}/alreadyLogged.mp3`)
+                "
+                type="audio/mp3"
+              />
               Your browser does not support the audio element.
             </audio>
             <!-- EXPIRED AUDIO -->
             <audio controls ref="expiredAudio" hidden>
-              <source src="@/assets/expired.wav" type="audio/wav" />
+              <source
+                :src="
+                  require(`@/assets/${this.app_settings.app_audio_folder}/expired.mp3`)
+                "
+                type="audio/mp3"
+              />
               Your browser does not support the audio element.
             </audio>
-
             <!-- THANK YOU AUDIO -->
             <audio controls ref="thankyouAudio" hidden>
-              <source src="@/assets/thankyou.wav" type="audio/wav" />
+              <source
+                :src="
+                  require(`@/assets/${this.app_settings.app_audio_folder}/thankyou.mp3`)
+                "
+                type="audio/mp3"
+              />
               Your browser does not support the audio element.
             </audio>
           </div>
@@ -247,6 +279,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      app_settings: "auth/app_settings",
       show_navs: "auth/show_navs",
       attendances: "attendance/attendances",
       top_gymmers: "account/top_gymmers",

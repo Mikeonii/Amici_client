@@ -4,7 +4,7 @@
     <v-navigation-drawer
       app
       v-model="drawer"
-      src="@/assets/banner.jpg"
+      :src="require(`@/assets/${this.app_settings.app_bg}`)"
       width="320"
       class=""
     >
@@ -13,14 +13,15 @@
         <template v-if="authenticated">
           <v-list-item>
             <v-list-item-avatar>
-              <img src="@/assets/jc_logo.jpg" />
+              <img :src="require(`@/assets/${this.app_settings.app_logo}`)" />
             </v-list-item-avatar>
             <v-list-item-content>
               <!-- <template v-if="authenticated"> -->
-              <v-list-item-title class="white--text text--lighten-4 overline"
-                >JC FITNESS GYM PASS SYSTEM</v-list-item-title
-              >
-              <v-list-item-subtitle class="purple--text text--darken-1"
+              <v-list-item-title class="white--text text--lighten-4 overline">{{
+                this.app_settings.app_name
+              }}</v-list-item-title>
+              <v-list-item-subtitle
+                :class="`${this.app_settings.app_color}--text text--darken-1`"
                 >Powered by JMBComputers</v-list-item-subtitle
               >
             </v-list-item-content>
@@ -44,19 +45,6 @@
               }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <!-- signout -->
-          <!-- <v-list-item @click="signOut" route>
-            <v-list-item-icon>
-              <v-icon class="blue--text text--lighten-4">
-                mdi-exit_to_app
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title class="blue--text text--lighten-4">
-                Sign-Out
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item> -->
         </template>
         <!-- link 2 -->
         <template v-else>
@@ -129,6 +117,7 @@ export default {
     ...mapGetters({
       user: "auth/user",
       loading_out: "1",
+      app_settings: "auth/app_settings",
     }),
   },
   data() {
