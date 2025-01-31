@@ -16,14 +16,24 @@
         <p class="caption">securityModal.vue</p>
       </v-card-actions>
     </v-card>
+    <!-- lazy -->
+    <alert-modal
+      :message="alertMessage"
+      v-if="enableAlert"
+      @close="enableAlert = false"
+    />
   </v-dialog>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+
 export default {
+  components: { alertModal: () => import("./alertModal.vue") },
   data() {
     return {
+      alertMessage: "",
+      enableAlert: false,
       security_answer: "",
       security_code: "",
       security: true,
@@ -37,9 +47,9 @@ export default {
   methods: {
     check() {
       if (this.security_answer != this.security_code) {
-        alert("Wrong Password");
+        this.alertMessage = "Wrong Password";
+        this.enableAlert = true;
       } else {
-        alert("Password Verified");
         this.$emit("passed", true);
       }
     },

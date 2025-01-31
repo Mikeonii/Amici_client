@@ -10,23 +10,23 @@ export default {
   // read info from state
   getters: {
     app_settings() {
-      var app_settings = {
-        app_name: "JC Fitness GYM",
-        app_color: "purple",
-        app_bg: "banner.jpg",
-        app_logo: "jc_logo.jpg",
-        app_audio_folder: "jc_audio",
-        app_security_code: "jazzycarl21",
-      };
-
       // var app_settings = {
-      //   app_name: "Amici Fitness Spa",
-      //   app_color: "yellow",
-      //   app_bg: "bg.jpg",
-      //   app_logo: "logo.png",
-      //   app_audio_folder: "amici_audio",
-      //   app_security_code: "amicifitness25",
+      //   app_name: "JC Fitness GYM",
+      //   app_color: "purple",
+      //   app_bg: "banner.jpg",
+      //   app_logo: "jc_logo.jpg",
+      //   app_audio_folder: "jc_audio",
+      //   app_security_code: "jazzycarl21",
       // };
+
+      var app_settings = {
+        app_name: "Amici Fitness Spa",
+        app_color: "yellow",
+        app_bg: "bg.jpg",
+        app_logo: "logo.png",
+        app_audio_folder: "amici_audio",
+        app_security_code: "amicifitness25",
+      };
       return app_settings;
     },
     default_server_url() {

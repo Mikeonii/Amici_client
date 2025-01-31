@@ -5,6 +5,7 @@
       <v-card>
         <v-card-title>Add Body Measurement</v-card-title>
         <v-card-text>
+          <p>Measured by Inches and Centimeters</p>
           <v-text-field
             label="Upper Arm"
             v-model="form.upper_arm"
@@ -48,15 +49,25 @@
         </v-card-actions></v-card
       ></v-dialog
     >
+    <!-- lazy -->
+    <alert-modal
+      title="Alert"
+      :message="alertMessage"
+      v-if="enableAlert"
+      @close="enableAlert = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 export default {
+  components: { alertModal: () => import("../alertModal.vue") },
   props: ["account_id"],
   data() {
     return {
+      alertMessage: "",
+      enableAlert: "",
       form: {},
       dialog: false,
       button_loading: false,
@@ -68,20 +79,20 @@ export default {
     }),
 
     submit() {
-      let x = window.confirm("Are you sure you want to proceed?");
-      if (x) {
-        this.form.account_id = this.account_id;
-        this.button_loading = true;
-        this.add_measurement(this.form)
-          .then(() => {
-            alert("Successfully added a measurement");
-            this.button_loading = false;
-          })
-          .catch((err) => {
-            alert(err);
-            this.button_loading = false;
-          });
-      }
+      this.form.account_id = this.account_id;
+      this.button_loading = true;
+      this.add_measurement(this.form)
+        .then(() => {
+          this.alertMessage = "Successfully added a measurement";
+          this.enableAlert = true;
+          this.button_loading = false;
+        })
+        .catch((err) => {
+          this.alertMessage = err;
+          this.enableAlert = true;
+
+          this.button_loading = false;
+        });
     },
   },
 };

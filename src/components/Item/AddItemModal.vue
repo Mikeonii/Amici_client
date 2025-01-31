@@ -45,14 +45,25 @@
         >
       </v-card>
     </v-dialog>
+    <!-- lazy -->
+    <alert-modal
+      title="Alert"
+      :message="alertMessage"
+      v-if="enableAlert"
+      @close="enableAlert = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+
 export default {
+  components: { alertModal: () => import("../alertModal.vue") },
   data() {
     return {
+      alertMessage: "",
+      enableAlert: "",
       dialog: false,
       form: {},
       loading: false,
@@ -63,18 +74,17 @@ export default {
       add_item: "item/add_item",
     }),
     submit() {
-      let x = window.confirm("Are you sure you want to add this item?");
-      if (x) {
-        this.loading = true;
-        this.add_item(this.form)
-          .then(() => {
-            alert("Successfully added a new item!");
-          })
-          .catch((err) => {
-            alert(err);
-          });
-        this.loading = false;
-      }
+      this.loading = true;
+      this.add_item(this.form)
+        .then(() => {
+          this.alertMessage = "Successfully added an item";
+          this.enableAlert = true;
+        })
+        .catch((err) => {
+          this.alertMessage = err;
+          this.enableAlert = true;
+        });
+      this.loading = false;
     },
   },
 };

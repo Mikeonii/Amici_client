@@ -65,6 +65,12 @@
               <v-btn small @click="select(item)" color="success">Select</v-btn>
             </template>
           </v-data-table>
+          <alert-modal
+            title="Alert"
+            :message="alertMessage"
+            v-if="enableAlert"
+            @close="enableAlert = false"
+          />
         </v-card-text>
         <v-card-actions>
           <v-btn @click="dialog = false">Close</v-btn>
@@ -78,10 +84,14 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+
 export default {
+  components: { alertModal: () => import("../alertModal.vue") },
   props: ["account_id"],
   data() {
     return {
+      alertMessage: "",
+      enableAlert: "",
       quantity: 0,
       selected_item: {},
       confirmed_items: [],
@@ -115,19 +125,18 @@ export default {
       this.selected_item.account_id = this.account_id;
     },
     confirm_add() {
-      let x = window.confirm("Are you sure you want to add these items?");
-      if (x) {
-        this.button_loading = true;
-        this.add_item_transaction(this.selected_item)
-          .then(() => {
-            alert("Successfully added an item transaction");
-          })
-          .catch((err) => {
-            alert(err);
-          });
+      this.button_loading = true;
+      this.add_item_transaction(this.selected_item)
+        .then(() => {
+          this.alertMessage = "Successfully added an item transaction";
+          this.enableAlert = true;
+        })
+        .catch((err) => {
+          this.alertMessage = err;
+          this.enableAlert = true;
+        });
 
-        this.button_loading = false;
-      }
+      this.button_loading = false;
     },
   },
   computed: {

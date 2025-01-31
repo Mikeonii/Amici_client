@@ -401,10 +401,8 @@ export default {
 
     if (this.top_gymmers_of_current_month.length <= 0)
       this.get_top_gymmers_of_the_month(date);
-    console.log("triggered top gymmers of this month", date);
   },
   mounted() {
-    // to delay the input of strings in textfield
     this.debouncedInsertAttendance = _.debounce(this.insert_attendance, 100);
   },
 };

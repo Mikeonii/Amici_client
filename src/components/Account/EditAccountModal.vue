@@ -44,15 +44,25 @@
         >
       </v-card>
     </v-dialog>
+    <!-- lazy -->
+    <alert-modal
+      title="Alert"
+      :message="alertMessage"
+      v-if="enableAlert"
+      @close="enableAlert = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 export default {
+  components: { alertModal: () => import("../alertModal.vue") },
   props: ["item"],
   data() {
     return {
+      alertMessage: "",
+      enableAlert: "",
       dialog: false,
       loading: false,
     };
@@ -62,18 +72,17 @@ export default {
       edit_account: "account/edit_account",
     }),
     submit() {
-      let x = window.confirm("Are you sure you want to edit this account?");
-      if (x) {
-        this.loading = true;
-        this.edit_account(this.item)
-          .then(() => {
-            alert("Successfully edited an account!");
-          })
-          .catch((err) => {
-            alert(err);
-          });
-        this.loading = false;
-      }
+      this.loading = true;
+      this.edit_account(this.item)
+        .then(() => {
+          this.alertMessage = "Successfully edited an account!";
+          this.enableAlert = true;
+        })
+        .catch((err) => {
+          this.alertMessage = err;
+          this.enableAlert = true;
+        });
+      this.loading = false;
     },
   },
 };

@@ -9,39 +9,7 @@
         <v-card-text>
           <v-row>
             <v-col cols="4" class="mt-1">
-              <div v-if="!item.profile_picture_url">
-                <v-img
-                  src="@/assets/jc_logo.jpg"
-                  width="100%"
-                  height="50%"
-                ></v-img>
-              </div>
-              <div v-else>
-                <v-avatar size="250">
-                  <v-img :src="item.profile_picture_url" width="100%"></v-img>
-                </v-avatar>
-              </div>
-
-              <div class="mt-5">
-                <input
-                  class="black--text"
-                  type="file"
-                  ref="photo_upload"
-                  name="photo_upload"
-                  @change="insert_image"
-                  accept="image/jpeg"
-                />
-                <br />
-                <v-btn
-                  small
-                  class="mt-5"
-                  color=""
-                  @click="upload_image"
-                  :loading="uploading"
-                >
-                  Upload Picture</v-btn
-                >
-              </div>
+              <file-uploader :item="item" />
             </v-col>
             <v-col cols="">
               <div class="d-flex">
@@ -96,21 +64,7 @@
             </v-col>
           </v-row>
           <br />
-          <!-- <div class="">
-            <h2 class="heading-3">Body Transformation</h2>
 
-            <v-row>
-              <v-col v-for="n in 9" :key="n" class="d-flex child-flex" cols="4">
-                <v-img
-                  :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
-                  :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
-                  aspect-ratio="1"
-                  class="grey lighten-2"
-                >
-                </v-img>
-              </v-col>
-            </v-row>
-          </div> -->
           <body-measurement :item="item" />
         </v-card-text>
         <v-card-actions>
@@ -124,19 +78,19 @@
 </template>
 
 <script>
-// import firebase from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import moment from "moment";
 
 import ItemTransactionModal from "../Item/ItemTransactionModal.vue";
 import CreditTransactionModal from "../CreditTransactionModal.vue";
 import BodyMeasurement from "./BodyMeasurement.vue";
+import FileUploader from "../fileUploader.vue";
 export default {
   components: {
     ItemTransactionModal,
     CreditTransactionModal,
     BodyMeasurement,
+    FileUploader,
   },
   props: ["item"],
   data() {
@@ -147,31 +101,13 @@ export default {
       uploading: false,
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      app_settings: "auth/app_settings",
+    }),
+  },
 
   methods: {
-    insert_image(e) {
-      this.picture = e.target.files[0];
-      this.picture_url = URL.createObjectURL(this.picture);
-    },
-    upload_image() {
-      this.uploading = true;
-      const storage = getStorage();
-      const storageRef = ref(storage, "ProfilePictures/" + this.picture_url);
-      // 'file' comes from the Blob or File API
-      uploadBytes(storageRef, this.picture).then(() => {
-        getDownloadURL(storageRef).then((downloadURL) => {
-          this.upload_profile_picture({
-            id: this.item.id,
-            profile_picture_url: downloadURL,
-          }).then(() => {
-            alert("Picture Uploaded!");
-            this.uploading = false;
-          });
-        });
-      });
-    },
-
     async open() {
       this.dialog = true;
 
@@ -182,7 +118,6 @@ export default {
       get_credit_transactions: "account/get_credit_transactions",
       get_item_transactions: "item/get_item_transactions",
 
-      upload_profile_picture: "account/upload_profile_picture",
       upload_body_improvement_picture:
         "account/upload_body_improvement_picture",
     }),

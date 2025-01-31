@@ -14,6 +14,7 @@
           >{{ show_navs == true ? "Start" : "Exit" }}</v-btn
         >
       </div>
+      <file-uploader />
       <attendance-summary-table />
       <sales-summary-table />
       <v-row class="mt-4">
@@ -32,6 +33,7 @@ import AttendanceTableView from "../components/AttendanceTableView.vue";
 import AttendanceListTable from "../components/Reports/AttendanceListTable.vue";
 import SalesSummaryTable from "../components/Reports/SalesSummaryTable.vue";
 import SalesListTable from "../components/Reports/SalesListTable.vue";
+import FileUploader from "../components/fileUploader.vue";
 export default {
   components: {
     AttendanceSummaryTable,
@@ -39,6 +41,7 @@ export default {
     AttendanceTableView,
     SalesSummaryTable,
     SalesListTable,
+    FileUploader,
   },
   data() {
     return {};
