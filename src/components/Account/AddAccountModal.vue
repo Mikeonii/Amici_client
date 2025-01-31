@@ -38,18 +38,30 @@
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="submit">Submit</v-btn>
-          <v-btn @click="dialog = false">Close</v-btn></v-card-actions
-        >
+          <v-btn @click="dialog = false">Close</v-btn>
+          <v-spacer></v-spacer>
+          <p class="caption">addAccountModal.vue</p>
+        </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- lazy -->
+    <alert-modal
+      title="Alert"
+      :message="alertMessage"
+      v-if="enableAlert"
+      @close="enableAlert = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 export default {
+  components: { alertModal: () => import("../alertModal.vue") },
   data() {
     return {
+      alertMessage: "",
+      enableAlert: "",
       dialog: false,
       form: {},
       loading: false,
@@ -60,18 +72,17 @@ export default {
       add_account: "account/add_account",
     }),
     submit() {
-      let x = window.confirm("Are you sure you want to add this account?");
-      if (x) {
-        this.loading = true;
-        this.add_account(this.form)
-          .then(() => {
-            alert("Successfully added a new account!");
-          })
-          .catch((err) => {
-            alert(err);
-          });
-        this.loading = false;
-      }
+      this.loading = true;
+      this.add_account(this.form)
+        .then(() => {
+          this.alertMessage = "Successfully added a new account!";
+          this.enableAlert = true;
+        })
+        .catch((err) => {
+          this.alertMessage = err;
+          this.enableAlert = true;
+        });
+      this.loading = false;
     },
   },
 };

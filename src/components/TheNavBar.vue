@@ -94,7 +94,7 @@
           <p class="caption white--text">
             <v-icon small color="white" class="pr-2">mdi-flash</v-icon>Powered
             by:
-            <strong>JMBComputers IT Solutions</strong>
+            <strong>JMBComputers IT Solutions version {{ version }}</strong>
             <br />
             <span class="grey--text text--darken-1"
               ><v-icon color="white" small class="pr-2">mdi-gmail</v-icon>
@@ -109,6 +109,7 @@
 </template>
 
 <script>
+import packageJson from "../../package.json";
 import { mapGetters, mapActions } from "vuex";
 export default {
   props: ["hide"],
@@ -120,8 +121,12 @@ export default {
       app_settings: "auth/app_settings",
     }),
   },
+  created() {
+    this.version = packageJson.version;
+  },
   data() {
     return {
+      version: "",
       authenticated: true,
       drawer: true,
       links: [

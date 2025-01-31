@@ -6,7 +6,7 @@
         <v-card-title><p class="display-1">Session</p></v-card-title>
         <v-card-text>
           <h3>Add Session</h3>
-          <v-form ref="form" @submit.prevent="add_session">
+          <v-form ref="form" @submit.prevent="add">
             <v-row>
               <v-col>
                 <v-text-field
@@ -96,12 +96,6 @@ export default {
     };
   },
   methods: {
-    add_session() {
-      // let x = window.confirm("Are you sure you want to proceed?");
-      // if (x) {
-      this.add(this.form);
-      // }
-    },
     async add(form) {
       this.button_loading = true;
       await axios.post("session", form).then((res) => {
@@ -120,10 +114,7 @@ export default {
       return;
     },
   },
-  created() {
-    this.get_sessions();
-  },
-  mounted: {},
+  created() {},
 };
 </script>
 

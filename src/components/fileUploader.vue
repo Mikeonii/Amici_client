@@ -53,6 +53,7 @@ export default {
   computed: {
     ...mapGetters({
       default_server_url: "auth/default_server_url",
+      app_settings: "auth/app_settings",
     }),
   },
   methods: {
