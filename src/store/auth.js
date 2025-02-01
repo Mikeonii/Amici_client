@@ -17,6 +17,7 @@ export default {
       //   app_logo: "jc_logo.jpg",
       //   app_audio_folder: "jc_audio",
       //   app_security_code: "jazzycarl21",
+      //   walkInSession: 100,
       // };
 
       var app_settings = {
@@ -26,6 +27,7 @@ export default {
         app_logo: "logo.png",
         app_audio_folder: "amici_audio",
         app_security_code: "amicifitness25",
+        walkInSession: 50,
       };
       return app_settings;
     },

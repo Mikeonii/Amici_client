@@ -73,6 +73,7 @@
 <script>
 import axios from "axios";
 import alertModal from "./alertModal.vue";
+import { mapGetters } from "vuex";
 export default {
   components: { alertModal },
   data() {
@@ -95,10 +96,16 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters({
+      app_settings: "auth/app_settings",
+    }),
+  },
   methods: {
-    async add(form) {
+    async add() {
       this.button_loading = true;
-      await axios.post("session", form).then((res) => {
+
+      await axios.post("session", this.form).then((res) => {
         this.button_loading = false;
 
         this.enable_alert = true;
@@ -114,7 +121,9 @@ export default {
       return;
     },
   },
-  created() {},
+  created() {
+    this.form.amount_paid = this.app_settings.walkInSession;
+  },
 };
 </script>
 

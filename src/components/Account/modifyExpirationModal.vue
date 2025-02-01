@@ -57,6 +57,8 @@
             >Submit</v-btn
           >
           <v-btn @click="dialog = false">Close</v-btn>
+          <v-spacer></v-spacer>
+          <p class="captions">modifyExpirationModal.vue</p>
         </v-card-actions></v-card
       ></v-dialog
     >
@@ -66,16 +68,28 @@
       @passed="open_dialog"
       @close="enable_security = false"
     />
+    <!-- lazy -->
+    <alert-modal
+      title="Alert"
+      :message="alertMessage"
+      v-if="enableAlert"
+      @close="enableAlert = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 export default {
-  components: { securityModal: () => import("../securityModal.vue") },
+  components: {
+    securityModal: () => import("../securityModal.vue"),
+    alertModal: () => import("../alertModal.vue"),
+  },
   props: ["item"],
   data() {
     return {
+      alertMessage: "",
+      enableAlert: "",
       enable_security: false,
       form: {
         id: "",
@@ -98,16 +112,16 @@ export default {
     },
     submit() {
       this.form.id = this.item.id;
-      let x = window.confirm("Are you sure you want to proceed?");
-      if (x) {
-        this.modify_expiry_dates(this.form)
-          .then(() => {
-            alert("Operation Success");
-          })
-          .catch((err) => {
-            alert(err.message);
-          });
-      }
+
+      this.modify_expiry_dates(this.form)
+        .then(() => {
+          this.alertMessage = "Success";
+          this.enableAlert = true;
+        })
+        .catch((err) => {
+          this.alertMessage = err;
+          this.enableAlert = true;
+        });
     },
     ...mapActions({
       modify_expiry_dates: "account/modify_expiry_dates",

@@ -331,7 +331,7 @@ export default {
           this.$refs.successAudio.play();
         } else if (
           message ==
-          "Thank you for choosing JC Fitness Gym. Hope you had a good time!"
+          "Thank you for coming in"
         ) {
           modal_info.modal_width = 1200;
           modal_info.modal_time_out = 10000;
