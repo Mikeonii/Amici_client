@@ -128,7 +128,10 @@
               <div class="pa-2">
                 <v-avatar size="40" color="grey darken-3">
                   <h2
-                    v-if="item.account.profile_picture_url == 'n/a'"
+                    v-if="
+                      item.account.profile_picture_url == null ||
+                      item.account.profile_picture_url == 'n/a'
+                    "
                     class="white--text"
                   >
                     {{ item.account.name.charAt(0) }}
@@ -180,7 +183,10 @@
               <div class="pa-2">
                 <v-avatar size="40" color="grey darken-3">
                   <h2
-                    v-if="item.profile_picture_url == 'n/a'"
+                    v-if="
+                      item.account.profile_picture_url == null ||
+                      item.account.profile_picture_url == 'n/a'
+                    "
                     class="white--text"
                   >
                     {{ item.name.charAt(0) }}
@@ -329,10 +335,7 @@ export default {
           modal_info.card_icon = "mdi-check";
           this.modal_time_out = success_modal_time_out;
           this.$refs.successAudio.play();
-        } else if (
-          message ==
-          "Thank you for coming in"
-        ) {
+        } else if (message == "Thank you for coming in") {
           modal_info.modal_width = 1200;
           modal_info.modal_time_out = 10000;
           modal_info.card_color = "success";

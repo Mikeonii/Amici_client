@@ -37,14 +37,8 @@ export default {
         return res;
       }
       // for log out
-      else if (
-        response.data[1] ==
-        "Thank you for choosing JC Fitness Gym. Hope you had a good time!"
-      ) {
-        res = [
-          response.data[0],
-          "Thank you for choosing JC Fitness Gym. Hope you had a good time!",
-        ];
+      else if (response.data[1] == "Thank you for coming in") {
+        res = [response.data[0], "Thank you for coming in"];
         commit("EDIT_ATTENDANCE", res[0]);
         return res;
       }

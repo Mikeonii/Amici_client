@@ -14,20 +14,22 @@
           <v-row v-if="att_data">
             <!-- AVATAR -->
             <v-col cols="4">
-              <v-avatar
+              <v-img
+                :src="require(`@/assets/${app_settings.app_logo}`)"
                 size="200"
                 color="grey darken-3"
-                v-if="att_data.account.profile_picture_url == 'n/a'"
+                v-if="
+                  att_data.account.profile_picture_url == 'n/a' ||
+                  att_data.account.profile_picture_url == null
+                "
               >
-                <h2 class="white--text">
-                  {{ att_data.account.name.charAt(0) }}
-                </h2>
-              </v-avatar>
+              </v-img>
               <v-img
                 v-else
                 :src="att_data.account.profile_picture_url"
                 width="100%"
-              ></v-img>
+              >
+              </v-img>
             </v-col>
             <!-- TEXT INFO -->
             <v-col>
@@ -57,7 +59,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters({
+      app_settings: "auth/app_settings",
+    }),
+  },
   props: {
     message: {
       type: String,

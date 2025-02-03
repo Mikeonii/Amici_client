@@ -74,16 +74,13 @@ export default {
       this.dialog = true;
     },
     async submit() {
-      let x = window.confirm("Are you sure you want to proceed?");
-      if (x) {
-        let url =
-          this.default_server_url +
-          "/print_monthly_sales/" +
-          this.selectedMonth +
-          "/" +
-          this.selectedYear;
-        window.open(url);
-      }
+      let url =
+        this.default_server_url +
+        "/print_monthly_sales/" +
+        this.selectedMonth +
+        "/" +
+        this.selectedYear;
+      window.open(url);
     },
   },
 };
