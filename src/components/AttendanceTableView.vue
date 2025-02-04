@@ -184,8 +184,8 @@
                 <v-avatar size="40" color="grey darken-3">
                   <h2
                     v-if="
-                      item.account.profile_picture_url == null ||
-                      item.account.profile_picture_url == 'n/a'
+                      item.profile_picture_url == null ||
+                      item.profile_picture_url == 'n/a'
                     "
                     class="white--text"
                   >
