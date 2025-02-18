@@ -107,7 +107,9 @@ export default {
 
       await axios.post("session", this.form).then((res) => {
         this.button_loading = false;
-
+        this.form.customer_gender = "";
+        this.form.address = "";
+        this.form.customer_name = "";
         this.enable_alert = true;
         this.alert_message = "Successfully added a session";
         this.sessions.unshift(res.data);

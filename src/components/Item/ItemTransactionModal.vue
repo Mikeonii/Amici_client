@@ -9,9 +9,7 @@
           <v-row class="mt-3">
             <v-col> <h4>Item Transactions</h4></v-col>
             <v-spacer></v-spacer>
-            <v-col class="d-flex justify-end">
-              <add-item-transaction :account_id="item.id" />
-            </v-col>
+            <v-col class="d-flex justify-end"> </v-col>
           </v-row>
           <v-data-table
             :items="item_transactions"
@@ -23,9 +21,7 @@
           </v-data-table>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="submit" color="primary" :loading="button_loading"
-            >Submit</v-btn
-          >
+          <add-item-transaction :account_id="item.id" class="mr-2" />
           <v-btn @click="dialog = false">Close</v-btn>
           <v-spacer></v-spacer>
           <p class="caption">ItemTransactionModal.vue</p>

@@ -1,33 +1,54 @@
 <template>
   <div>
-    <v-btn color="" @click="dialog = true">Add</v-btn>
-    <v-dialog v-model="dialog" width="850" persistent>
+    <v-btn color="primary" @click="dialog = true">Add</v-btn>
+    <v-dialog v-model="dialog" width="900" persistent>
       <v-card>
         <v-card-title>Add Item Transaction</v-card-title>
         <v-card-text>
           <div>
             <!-- SELECTED ITEM -->
             <div>
-              <div class="d-flex mb-2 mt-2">
-                <h4>Item Name:</h4>
-                <h2 class="ml-2">{{ selected_item.item_name }}</h2>
-              </div>
-              <hr />
-              <br />
+              <v-row class="mt-2">
+                <v-col d-flex>
+                  <h4>Item Name:</h4>
+                  <h2 class="ml-2">
+                    <span
+                      class="green--text"
+                      v-if="this.selected_item.item_name"
+                      >{{ selected_item.item_name }}</span
+                    >
+                    <span v-else class="red--text">
+                      Please Select an Item
+                    </span>
+                  </h2>
+                </v-col>
+
+                <v-col>
+                  <v-select
+                    class="ml-4"
+                    v-model="selected_item.method"
+                    :items="methodItems"
+                    label="Method"
+                    item-text="text"
+                    item-value="value"
+                  ></v-select>
+                </v-col>
+              </v-row>
+
               <v-row>
-                <v-col cols="">
+                <v-col cols="1">
                   <h4>Item ID:</h4>
                   {{ selected_item.id }}
                 </v-col>
-                <v-col>
+                <v-col cols="2">
                   <h4>Selling Price:</h4>
                   {{ selected_item.selling_price }}
                 </v-col>
-                <v-col>
+                <v-col cols="2">
                   <h4>Stocks:</h4>
                   {{ selected_item.stocks }}
                 </v-col>
-                <v-col>
+                <v-col cols="1">
                   <h4>Unit:</h4>
                   {{ selected_item.unit }}
                 </v-col>
@@ -39,14 +60,20 @@
                     @input="calculate()"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="3" class="d-flex">
                   <v-text-field
                     readonly
                     type="number"
                     label="Total Amount"
                     v-model="this.selected_item.total_amount"
                   ></v-text-field>
-                  <v-btn color="yellow" @click="confirm_add">Confirm</v-btn>
+                  <v-btn
+                    class="mt-2 ml-2"
+                    color="yellow"
+                    @click="confirm_add"
+                    :loading="button_loading"
+                    >Add</v-btn
+                  >
                 </v-col>
               </v-row>
             </div>
@@ -57,6 +84,7 @@
             v-model="item_search"
           ></v-text-field>
           <v-data-table
+            dense
             :items="items"
             :headers="items_headers"
             :search="item_search"
@@ -90,6 +118,13 @@ export default {
   props: ["account_id"],
   data() {
     return {
+      methodItems: [
+        {
+          text: "Renew",
+          value: "renew",
+        },
+        { text: "Continue", value: "continue" },
+      ],
       alertMessage: "",
       enableAlert: "",
       quantity: 0,
@@ -121,6 +156,7 @@ export default {
     },
     submit() {},
     select(item) {
+      this.selected_item.method = "renew";
       this.selected_item = item;
       this.selected_item.account_id = this.account_id;
     },
@@ -155,6 +191,7 @@ export default {
     },
   },
   mounted() {
+    this.selected_item.method = "renew";
     if (this.items.length == 0) this.get_items();
   },
 };
