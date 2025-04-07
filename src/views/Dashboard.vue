@@ -8,11 +8,12 @@
         <h1 class="">Welcome to Dashboard</h1>
         <v-spacer></v-spacer>
         <v-btn
-          class="mb-6"
+          class="mb-6 white--text"
           :color="show_navs ? this.app_settings.app_color : 'grey'"
           @click="toggle_navs"
           >{{ show_navs == true ? "Start" : "Exit" }}</v-btn
         >
+        <expired-accounts-modal />
       </div>
       <file-uploader />
       <attendance-summary-table />
@@ -34,6 +35,7 @@ import AttendanceListTable from "../components/Reports/AttendanceListTable.vue";
 import SalesSummaryTable from "../components/Reports/SalesSummaryTable.vue";
 import SalesListTable from "../components/Reports/SalesListTable.vue";
 import FileUploader from "../components/fileUploader.vue";
+import ExpiredAccountsModal from "../components/Account/expiredAccountsModal.vue";
 export default {
   components: {
     AttendanceSummaryTable,
@@ -42,6 +44,7 @@ export default {
     SalesSummaryTable,
     SalesListTable,
     FileUploader,
+    ExpiredAccountsModal,
   },
   data() {
     return {};
