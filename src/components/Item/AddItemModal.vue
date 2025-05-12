@@ -36,6 +36,13 @@
             prepend-icon="mdi-ruler"
             :items="['Pcs', 'Boxes', 'Tray']"
           ></v-select>
+
+          <v-select
+            prepend-icon="mdi-check"
+            label="Item Type"
+            :items="itemTypes"
+            v-model="form.item_type"
+          ></v-select>
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="submit" :loading="loading"
@@ -67,6 +74,14 @@ export default {
       dialog: false,
       form: {},
       loading: false,
+      itemTypes: [
+        "Monthly Subscription",
+        "Membership",
+        "Membership and Monthly",
+        "Item Sale",
+        "Discounted Monthly Subscription",
+        "Discounted Membership",
+      ],
     };
   },
   methods: {

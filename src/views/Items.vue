@@ -37,6 +37,12 @@
         </template>
       </v-data-table>
     </div>
+    <alert-modal
+      title="Alert"
+      :message="alertMessage"
+      v-if="enableAlert"
+      @close="enableAlert = false"
+    />
   </v-container>
 </template>
 
@@ -45,15 +51,19 @@ import moment from "moment";
 import { mapActions, mapGetters } from "vuex";
 import AddItemModal from "../components/Item/AddItemModal.vue";
 import EditItemModal from "../components/Item/EditItemModal.vue";
+
 export default {
   data() {
     return {
+      alertMessage: "",
+      enableAlert: "",
       search: "",
       table_loading: true,
       item_header: [
         { text: "", value: "action" },
         { text: "ID", value: "id" },
         { text: "Item Name", value: "item_name" },
+        { text: "Item Type", value: "item_type" },
         { text: "Unit Price", value: "unit_price" },
         { text: "Selling Price", value: "selling_price" },
         { text: "Stocks", value: "stocks" },
@@ -72,10 +82,15 @@ export default {
   methods: {
     ...mapActions({
       get_items: "item/get_items",
+      del_item: "item/del_item",
     }),
     del(item) {
-      return item;
+      this.del_item(item).then(() => {
+        this.alertMessage = "Successfully deleted an account!";
+        this.enableAlert = true;
+      });
     },
+
     formatted_dateTime(dateTime) {
       return moment(dateTime).format("MMMM D, YYYY - h:m:s A");
     },

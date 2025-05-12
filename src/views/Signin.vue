@@ -1,12 +1,29 @@
 <template>
   <div>
-    <v-img src="@/assets/banner.jpg" width="" height="%">
+    <v-img
+      :src="
+        app_settings.app_bg
+          ? require('@/assets/' + app_settings.app_bg)
+          : undefined
+      "
+      width="100%"
+      height="100%"
+    >
       <v-container class="mt-15">
         <v-container class="fill-height mt-13" fluid>
           <v-row align="center" justify="center">
-            <v-card class="elevation-12 rounded-l" max-width="800">
-              <div class="mt-10 mr-11 ml-5 text-center">
-                <h1 class="grey--text">Sign in here</h1>
+            <v-card class="elevation-12 rounded-l" max-width="600">
+              <div class="mt-10 mr-11 ml-5 pa-5 text-center">
+                <img
+                  :src="
+                    app_settings.app_logo2
+                      ? require('@/assets/' + app_settings.app_logo2)
+                      : ''
+                  "
+                  width="30%"
+                />
+
+                <h1 class="grey--text">{{ app_settings.app_name }}</h1>
                 <br />
                 <v-form ref="form">
                   <v-text-field
@@ -30,7 +47,7 @@
                 <v-btn
                   rounded
                   elevation="2"
-                  color="black"
+                  :color="app_settings.app_color"
                   class="mr-2 white--text"
                   @click="submit()"
                   :loading="loading"
@@ -54,6 +71,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { mapGetters } from "vuex/dist/vuex.common.js";
 export default {
   data() {
     return {
@@ -63,6 +81,11 @@ export default {
       },
       loading: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      app_settings: "auth/app_settings",
+    }),
   },
   methods: {
     ...mapActions({

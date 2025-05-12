@@ -8,7 +8,7 @@
         <h1 class="">Welcome to Dashboard</h1>
         <v-spacer></v-spacer>
         <v-btn
-          class="mb-6 white--text"
+          class="mb-6 white--text mr-2"
           :color="show_navs ? this.app_settings.app_color : 'grey'"
           @click="toggle_navs"
           >{{ show_navs == true ? "Start" : "Exit" }}</v-btn

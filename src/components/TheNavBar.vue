@@ -13,7 +13,13 @@
         <template v-if="authenticated">
           <v-list-item>
             <v-list-item-avatar>
-              <img :src="require(`@/assets/${this.app_settings.app_logo}`)" />
+              <img
+                :src="
+                  app_settings.app_logo2
+                    ? require('@/assets/' + app_settings.app_logo2)
+                    : require('@/assets/' + app_settings.app_logo)
+                "
+              />
             </v-list-item-avatar>
             <v-list-item-content>
               <!-- <template v-if="authenticated"> -->
@@ -123,6 +129,7 @@ export default {
   },
   created() {
     this.version = packageJson.version;
+    console.log(this.appLogo);
   },
   data() {
     return {

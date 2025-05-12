@@ -3,7 +3,7 @@
     <v-btn @click="verify" color="yellow">Sales</v-btn>
     <v-dialog v-model="dialog" width="800" persistent>
       <v-card>
-        <v-card-title><h3>Daily Sales</h3></v-card-title>
+        <v-card-title><h3>Monthly Sales</h3></v-card-title>
         <v-card-text>
           <div class="d-flex">
             <p class="mt-6 ml-2">Please select Date:</p>

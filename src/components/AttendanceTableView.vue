@@ -7,19 +7,25 @@
   >
     <div class="d-flex">
       <v-avatar size="62">
-        <img :src="require(`@/assets/${this.app_settings.app_logo}`)" />
+        <img
+          :src="
+            app_settings.app_logo2
+              ? require('@/assets/' + app_settings.app_logo2)
+              : require('@/assets/' + app_settings.app_logo)
+          "
+        />
       </v-avatar>
       <v-row class="ml-2">
         <v-col>
           <h3 :class="`${this.app_settings.app_color}--text mt-2`">
             {{ app_settings.app_name }}
           </h3>
-          <h3 class="white--text overline mt-n2">Management System</h3>
+          <h3 class="white--text overline mt-n2">Attendance System</h3>
         </v-col>
         <v-spacer></v-spacer>
         <v-col class="mt- d-flex justify-end">
-          <p class="white--text">
-            <v-icon color="white">mdi-lightning-bolt</v-icon>Powered by:
+          <p class="yellow--text">
+            <v-icon color="yellow">mdi-lightning-bolt</v-icon>Powered by:
             JMBComputers
           </p>
         </v-col>

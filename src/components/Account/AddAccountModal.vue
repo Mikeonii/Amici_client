@@ -5,36 +5,55 @@
       <v-card>
         <v-card-title> Add Account </v-card-title>
         <v-card-text>
-          <v-text-field
-            v-model="form.name"
-            label="Name"
-            prepend-icon="mdi-account"
-          ></v-text-field>
-          <v-select
-            prepend-icon="mdi-gender-male-female"
-            v-model="form.gender"
-            :items="['Male', 'Female']"
-            label="Gender"
-          ></v-select>
-          <div class="d-flex mt-2">
-            <p>Birthdate</p>
-            <input type="date" v-model="form.birth_date" class="ml-2 mt-n4" />
-          </div>
-          <v-text-field
-            v-model="form.address"
-            label="Address"
-            prepend-icon="mdi-map"
-          ></v-text-field>
-          <v-text-field
-            v-model="form.phone_number"
-            label="Phone"
-            prepend-icon="mdi-phone"
-          ></v-text-field>
-          <v-text-field
-            v-model="form.card_no"
-            label="Card Number"
-            prepend-icon="mdi-card"
-          ></v-text-field>
+          <v-form ref="form" v-model="validForm">
+            <v-text-field
+              v-model="form.name"
+              label="Name"
+              prepend-icon="mdi-account"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-select
+              prepend-icon="mdi-gender-male-female"
+              v-model="form.gender"
+              :items="['Male', 'Female']"
+              label="Gender"
+              :rules="[rules.required]"
+            ></v-select>
+            <div class="d-flex mt-2">
+              <p class="mt-3">Birthdate</p>
+              <input
+                type="date"
+                v-model="form.birth_date"
+                class="ml-2 mt-n4"
+                :rules="[rules.required]"
+              />
+              <v-text-field
+                class="ml-2"
+                label="Age"
+                v-model="form.age"
+                prepend-icon="mdi-account-circle"
+                :rules="[rules.required]"
+              ></v-text-field>
+            </div>
+            <v-text-field
+              v-model="form.address"
+              label="Address"
+              prepend-icon="mdi-map"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+              v-model="form.phone_number"
+              label="Phone"
+              prepend-icon="mdi-phone"
+              :rules="[rules.required]"
+            ></v-text-field>
+            <v-text-field
+              v-model="form.card_no"
+              label="Card Number"
+              prepend-icon="mdi-card"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="submit">Submit</v-btn>
@@ -65,24 +84,36 @@ export default {
       dialog: false,
       form: {},
       loading: false,
+      validForm: false, // To hold the validation state of the form
+      rules: {
+        required: (value) => !!value || "This field is required.",
+      },
     };
   },
   methods: {
     ...mapActions({
       add_account: "account/add_account",
     }),
-    submit() {
-      this.loading = true;
-      this.add_account(this.form)
-        .then(() => {
+    async submit() {
+      // Validate the form
+      await this.$refs.form.validate();
+
+      if (this.validForm) {
+        this.loading = true;
+        try {
+          await this.add_account(this.form);
           this.alertMessage = "Successfully added a new account!";
           this.enableAlert = true;
-        })
-        .catch((err) => {
-          this.alertMessage = err;
+          this.dialog = false; // Optionally close dialog on success
+          this.$refs.form.reset(); // Optionally reset form on success
+        } catch (err) {
+          this.alertMessage =
+            err.response?.data?.message || err.message || "An error occurred.";
           this.enableAlert = true;
-        });
-      this.loading = false;
+        } finally {
+          this.loading = false;
+        }
+      }
     },
   },
 };

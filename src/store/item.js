@@ -76,5 +76,10 @@ export default {
       // update account expiry
       commit("account/EDIT_ACCOUNT", response.data, { root: true });
     },
+
+    async del_item({ commit }, item) {
+      await axios.delete("/item/" + item.id);
+      commit("DELETE_ITEM", item.id);
+    },
   },
 };

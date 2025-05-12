@@ -1,9 +1,11 @@
 <template>
   <div>
-    <v-btn @click="dialog = true" class="ml-2" color="primary">Session</v-btn>
-    <v-dialog v-model="dialog" width="800" persistent>
+    <v-btn @click="dialog = true" class="ml-2" :color="app_settings.app_color"
+      >Session</v-btn
+    >
+    <v-dialog v-model="dialog" width="1000" persistent>
       <v-card>
-        <v-card-title><p class="display-1">Session</p></v-card-title>
+        <v-card-title><p class="display-1">Walk-in Session</p></v-card-title>
         <v-card-text>
           <h3>Add Session</h3>
           <v-form ref="form" @submit.prevent="add">
@@ -20,7 +22,12 @@
                   label="Gender"
                   v-model="form.customer_gender"
                   prepend-icon="mdi-gender-male"
-                ></v-select
+                ></v-select>
+                <v-text-field
+                  prepend-icon="mdi-cash"
+                  label="Amount Paid"
+                  v-model="form.amount_paid"
+                ></v-text-field
               ></v-col>
               <v-col>
                 <v-text-field
@@ -30,10 +37,11 @@
                   v-model="form.address"
                 ></v-text-field>
                 <v-text-field
-                  prepend-icon="mdi-cash"
-                  label="Amount Paid"
-                  v-model="form.amount_paid"
+                  prepend-icon="mdi-account-circle"
+                  label="Age"
+                  v-model="form.age"
                 ></v-text-field>
+
                 <v-btn color="primary" type="submit" :loading="button_loading"
                   >Add Session</v-btn
                 >
@@ -42,7 +50,29 @@
           </v-form>
 
           <v-divider class="mt-4 mb-4"></v-divider>
-          <h3>Sessions Table</h3>
+          <div class="d-flex">
+            <h3>Sessions Table</h3>
+            <v-spacer></v-spacer>
+            <div class="d-flex">
+              <v-select
+                label="month"
+                v-model="month"
+                prepend-icon="mdi-calendar"
+                :items="months"
+                item-text="name"
+                item-value="id"
+              ></v-select>
+              <v-select
+                label="year"
+                v-model="year"
+                prepend-icon="mdi-calendar"
+                :items="years"
+              ></v-select>
+              <v-btn @click="get_sessions_by_date" :loading="button_loading"
+                >Search</v-btn
+              >
+            </div>
+          </div>
           <v-text-field
             label="Search "
             prepend-icon="mdi-magnify"
@@ -78,6 +108,24 @@ export default {
   components: { alertModal },
   data() {
     return {
+      months: [
+        { id: 1, name: "January" },
+        { id: 2, name: "February" },
+        { id: 3, name: "March" },
+        { id: 4, name: "April" },
+        { id: 5, name: "May" },
+        { id: 6, name: "June" },
+        { id: 7, name: "July" },
+        { id: 8, name: "August" },
+        { id: 9, name: "September" },
+        { id: 10, name: "October" },
+        { id: 11, name: "November" },
+        { id: 12, name: "December" },
+      ],
+
+      years: [2025, 2026, 2027],
+      month: "",
+      year: "",
       enable_alert: false,
       form: {
         amount_paid: "100",
@@ -91,6 +139,8 @@ export default {
         { text: "id", value: "id" },
         { text: "Customer Name", value: "customer_name" },
         { text: "Address", value: "address" },
+        { text: "Age", value: "age" },
+        { text: "Gender", value: "customer_gender" },
         { text: "Date and Time", value: "created_at" },
         { text: "Amount Paid", value: "amount_paid" },
       ],
@@ -119,11 +169,19 @@ export default {
       let response = await axios.get("/sessions");
       this.sessions = response.data;
     },
+    async get_sessions_by_date() {
+      let month = this.month;
+      let year = this.year;
+      let response = await axios.get(`/sessions/byDate/${month}/${year}`);
+      this.sessions = response.data;
+    },
+
     submit() {
       return;
     },
   },
   created() {
+    this.get_sessions();
     this.form.amount_paid = this.app_settings.walkInSession;
   },
 };

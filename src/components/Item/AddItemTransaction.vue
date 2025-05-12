@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn color="primary" @click="dialog = true">Add</v-btn>
+    <v-btn color="primary     " @click="dialog = true">Add</v-btn>
     <v-dialog v-model="dialog" width="900" persistent>
       <v-card>
         <v-card-title>Add Item Transaction</v-card-title>

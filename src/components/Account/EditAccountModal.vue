@@ -21,6 +21,12 @@
           <div class="d-flex mt-2">
             <p>Birthdate</p>
             <input type="date" v-model="item.birth_date" class="ml-2 mt-n" />
+            <v-text-field
+              class="ml-2"
+              label="Age"
+              v-model="item.age"
+              prepend-icon="mdi-account-circle"
+            ></v-text-field>
           </div>
           <v-text-field
             v-model="item.address"
