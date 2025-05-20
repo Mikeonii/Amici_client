@@ -58,7 +58,7 @@
           >
           <v-btn @click="dialog = false">Close</v-btn>
           <v-spacer></v-spacer>
-          <p class="captions">modifyExpirationModal.vue</p>
+          <p class="caption">modifyExpirationModal.vue</p>
         </v-card-actions></v-card
       ></v-dialog
     >
@@ -72,14 +72,14 @@
     <alert-modal
       title="Alert"
       :message="alertMessage"
-      v-if="enableAlert"
-      @close="enableAlert = false"
+      v-if="alertModal"
+      @close="alertModal = false"
     />
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     securityModal: () => import("../securityModal.vue"),
@@ -89,7 +89,8 @@ export default {
   data() {
     return {
       alertMessage: "",
-      enableAlert: "",
+      alertModal: false,
+
       enable_security: false,
       form: {
         id: "",
@@ -111,6 +112,11 @@ export default {
       this.enable_security = true;
     },
     submit() {
+      if (this.user.username != "admin") {
+        this.alertMessage = "You are not allowed to perform this action";
+        this.alertModal = true;
+        return;
+      }
       this.form.id = this.item.id;
 
       this.modify_expiry_dates(this.form)
@@ -127,7 +133,11 @@ export default {
       modify_expiry_dates: "account/modify_expiry_dates",
     }),
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      user: "auth/user",
+    }),
+  },
 };
 </script>
 

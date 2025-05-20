@@ -41,7 +41,12 @@
                   label="Age"
                   v-model="form.age"
                 ></v-text-field>
-
+                <v-select
+                  prepend-icon="mdi-cash"
+                  label="Payment Method"
+                  :items="['Cash', 'Gcash']"
+                  v-model="form.payment_method"
+                ></v-select>
                 <v-btn color="primary" type="submit" :loading="button_loading"
                   >Add Session</v-btn
                 >
@@ -82,7 +87,13 @@
             :search="search"
             :items="sessions"
             :headers="session_headers"
-          ></v-data-table>
+          >
+            <template v-slot:item.action="{ item }">
+              <v-btn icon color="red" @click="delete_session(item)"
+                ><v-icon>mdi-delete</v-icon></v-btn
+              >
+            </template>
+          </v-data-table>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="dialog = false">Close</v-btn>
@@ -136,6 +147,7 @@ export default {
       button_loading: false,
       sessions: [],
       session_headers: [
+        { text: "Action", value: "action" },
         { text: "id", value: "id" },
         { text: "Customer Name", value: "customer_name" },
         { text: "Address", value: "address" },
@@ -143,15 +155,30 @@ export default {
         { text: "Gender", value: "customer_gender" },
         { text: "Date and Time", value: "created_at" },
         { text: "Amount Paid", value: "amount_paid" },
+        { text: "Payment Method", value: "payment_method" },
+        { text: "Posted By", value: "posted_by" },
       ],
     };
   },
   computed: {
     ...mapGetters({
       app_settings: "auth/app_settings",
+      user: "auth/user",
     }),
   },
   methods: {
+    async delete_session(item) {
+      if (this.user.username != "admin") {
+        this.alert_message = "You are not allowed to perform this action";
+        this.enable_alert = true;
+        return;
+      }
+      await axios.delete("/session/" + item.id);
+      this.get_sessions();
+      this.alert_message = "Successfully deleted a session";
+      this.enable_alert = true;
+    },
+
     async add() {
       this.button_loading = true;
 

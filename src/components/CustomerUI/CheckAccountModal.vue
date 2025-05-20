@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="dialog = true">
+    <v-btn @click="dialog = true" color="success">
       <v-icon> mdi-account </v-icon>
       Check Account
     </v-btn>

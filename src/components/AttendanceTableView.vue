@@ -30,7 +30,6 @@
           </p>
         </v-col>
         <v-col class="d-flex">
-          <check-account-modal />
           <add-session-modal />
           <v-btn class="ml-2" @click="show_top_gymmer = true"
             >Top Gym-Goers</v-btn
@@ -248,7 +247,7 @@ import { mapActions, mapGetters } from "vuex";
 import moment from "moment";
 
 // import accountNotFoundAudio from "@/assets/notFound.wav";
-import CheckAccountModal from "../components/CustomerUI/CheckAccountModal.vue";
+
 import AddSessionModal from "./addSessionModal.vue";
 export default {
   data() {
@@ -284,7 +283,6 @@ export default {
     };
   },
   components: {
-    CheckAccountModal,
     AddSessionModal,
     topGymmersModal: () => import("./topGymmersModal.vue"),
     messageModal: () => import("./messageModal.vue"),

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn color="primary     " @click="dialog = true">Add</v-btn>
-    <v-dialog v-model="dialog" width="900" persistent>
+    <v-dialog v-model="dialog" width="1200" persistent>
       <v-card>
         <v-card-title>Add Item Transaction</v-card-title>
         <v-card-text>
@@ -60,13 +60,19 @@
                     @input="calculate()"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="3" class="d-flex">
+                <v-col cols="4" class="d-flex">
                   <v-text-field
                     readonly
                     type="number"
                     label="Total Amount"
                     v-model="this.selected_item.total_amount"
                   ></v-text-field>
+                  <v-select
+                    class="ml-2"
+                    label="Payment Method"
+                    :items="paymentItems"
+                    v-model="paymentMethod"
+                  ></v-select>
                   <v-btn
                     class="mt-2 ml-2"
                     color="yellow"
@@ -125,9 +131,11 @@ export default {
         },
         { text: "Continue", value: "continue" },
       ],
+      paymentMethod: "Cash",
       alertMessage: "",
       enableAlert: "",
       quantity: 0,
+      paymentItems: ["Cash", "Gcash"],
       selected_item: {},
       confirmed_items: [],
       item_search: "",
@@ -152,16 +160,17 @@ export default {
       this.selected_item.total_amount =
         this.selected_item.selling_price * this.quantity;
       this.selected_item.quantity = this.quantity;
-      console.log(this.selected_item);
     },
     submit() {},
     select(item) {
       this.selected_item.method = "renew";
       this.selected_item = item;
       this.selected_item.account_id = this.account_id;
+      this.selected_item.method = "continue";
     },
     confirm_add() {
       this.button_loading = true;
+      this.selected_item.payment_method = this.paymentMethod;
       this.add_item_transaction(this.selected_item)
         .then(() => {
           this.alertMessage = "Successfully added an item transaction";

@@ -13,11 +13,16 @@
           @click="toggle_navs"
           >{{ show_navs == true ? "Start" : "Exit" }}</v-btn
         >
+        <check-account-modal class="mr-2" />
+        <add-subscription-modal class="mr-2" />
         <expired-accounts-modal />
+        <add-user-modal class="ml-2" />
+        <add-expense-modal class="ml-2" />
       </div>
       <file-uploader />
       <attendance-summary-table />
       <sales-summary-table />
+
       <v-row class="mt-4">
         <v-col><attendance-list-table /></v-col>
         <!-- test change -->
@@ -36,6 +41,10 @@ import SalesSummaryTable from "../components/Reports/SalesSummaryTable.vue";
 import SalesListTable from "../components/Reports/SalesListTable.vue";
 import FileUploader from "../components/fileUploader.vue";
 import ExpiredAccountsModal from "../components/Account/expiredAccountsModal.vue";
+import AddUserModal from "../components/User/addUserModal.vue";
+import AddExpenseModal from "../components/Expense/addExpenseModal.vue";
+import CheckAccountModal from "../components/CustomerUI/CheckAccountModal.vue";
+import AddSubscriptionModal from "../components/Subscriptions/addSubscriptionModal.vue";
 export default {
   components: {
     AttendanceSummaryTable,
@@ -45,6 +54,10 @@ export default {
     SalesListTable,
     FileUploader,
     ExpiredAccountsModal,
+    AddUserModal,
+    AddExpenseModal,
+    CheckAccountModal,
+    AddSubscriptionModal,
   },
   data() {
     return {};
@@ -61,6 +74,7 @@ export default {
   methods: {
     ...mapActions({
       toggle_navs: "auth/toggle_navs",
+      get_items: "item/get_items",
     }),
 
     signout() {
@@ -68,6 +82,9 @@ export default {
         window.location = "/signin";
       });
     },
+  },
+  created() {
+    this.get_items();
   },
 };
 </script>
