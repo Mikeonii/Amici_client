@@ -92,7 +92,17 @@
           <v-row>
             <v-col cols="6">
               <!-- Accounts -->
-              <h3>Accounts</h3>
+              <v-row>
+                <v-col>
+                  <h3>Accounts</h3>
+                </v-col>
+                <v-spacer></v-spacer>
+                <v-col cols="3">
+                  <v-btn small text color="success" @click="get_accounts()">
+                    <v-icon>mdi-refresh</v-icon> Refresh
+                  </v-btn>
+                </v-col>
+              </v-row>
               <v-text-field
                 label="Search Account"
                 prepend-icon="mdi-magnify"
@@ -114,6 +124,7 @@
             <v-col cols="6">
               <!-- Items and Subscriptions -->
               <h3>Subscriptions</h3>
+
               <v-text-field
                 label="Search Account"
                 prepend-icon="mdi-magnify"
@@ -136,7 +147,23 @@
           <div>
             <br />
             <br />
-            <h3>Subscription Transactions</h3>
+
+            <v-row>
+              <v-col>
+                <h3>Subscription Transactions</h3>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col cols="3">
+                <v-btn
+                  small
+                  text
+                  color="success"
+                  @click="get_item_transactions()"
+                >
+                  <v-icon>mdi-refresh</v-icon> Refresh
+                </v-btn>
+              </v-col>
+            </v-row>
             <v-text-field
               label="Item Transaction Search"
               v-model="itemTransactionSearch"
@@ -216,6 +243,7 @@ export default {
         { text: "Quantity", value: "quantity" },
         { text: "Total Amount", value: "amount" },
         { text: "Posted By", value: "posted_by" },
+        { text: "Posted Date", value: "created_at" },
       ],
     };
   },
@@ -229,6 +257,7 @@ export default {
   methods: {
     ...mapActions({
       add_item_transaction: "item/add_item_transaction",
+      get_accounts: "account/get_accounts",
     }),
     async deleteTransaction(item) {
       if (this.user.username != "admin") {

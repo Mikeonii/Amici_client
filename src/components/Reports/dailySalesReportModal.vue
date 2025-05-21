@@ -154,14 +154,14 @@ export default {
       this.dialog = true;
     },
     async submit(type) {
-      if (this.user.username !== "admin") {
-        this.alertMessage = "You are not allowed to perform this action";
-        this.alertModal = true;
-
-        return;
-      }
       let url;
       if (type == "monthly") {
+        if (this.user.username !== "admin") {
+          this.alertMessage = "You are not allowed to perform this action";
+          this.alertModal = true;
+
+          return;
+        }
         url =
           this.default_server_url +
           "/print_monthly_sales/" +

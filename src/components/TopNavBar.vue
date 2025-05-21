@@ -7,7 +7,8 @@
           page_name
         }}</v-toolbar-title></v-col
       >
-      <v-col cols="3">
+      <v-col cols="3" class="d-flex">
+        <p class="mt-2 font-weight-bold">{{ user.name }}</p>
         <v-btn text class="">
           <v-icon class="pr-2">mdi-spider-thread</v-icon>
           Report a Bug

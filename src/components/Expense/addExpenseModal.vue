@@ -78,6 +78,7 @@ export default {
         { text: "Amount", value: "amount" },
         { text: "Category", value: "category" },
         { text: "Posted by", value: "posted_by" },
+        { text: "Date Posted", value: "created_at" },
       ],
       expenses: [],
     };
