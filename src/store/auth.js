@@ -10,26 +10,26 @@ export default {
   // read info from state
   getters: {
     app_settings() {
-      var app_settings = {
-        app_name: "Alpha Fitness",
-        app_color: "error",
-        app_bg: "alphaBg.png",
-        app_logo: "alphaLogo.png",
-        app_logo2: "alphaLogoRound.png",
-        app_audio_folder: "alphaAudio",
-        app_security_code: "jmbcomputers2025",
-        walkInSession: 70,
-      };
-
       // var app_settings = {
-      //   app_name: "JC Fitness GYM",
-      //   app_color: "purple",
-      //   app_bg: "banner.jpg",
-      //   app_logo: "jc_logo.jpg",
-      //   app_audio_folder: "jc_audio",
-      //   app_security_code: "jazzycarl21",
-      //   walkInSession: 100,
+      //   app_name: "Alpha Fitness",
+      //   app_color: "error",
+      //   app_bg: "alphaBg.png",
+      //   app_logo: "alphaLogo.png",
+      //   app_logo2: "alphaLogoRound.png",
+      //   app_audio_folder: "alphaAudio",
+      //   app_security_code: "jmbcomputers2025",
+      //   walkInSession: 70,
       // };
+
+      var app_settings = {
+        app_name: "JC Fitness GYM",
+        app_color: "purple",
+        app_bg: "banner.jpg",
+        app_logo: "jc_logo.jpg",
+        app_audio_folder: "jc_audio",
+        app_security_code: "jazzycarl21",
+        walkInSession: 100,
+      };
 
       // var app_settings = {
       //   app_name: "Amici Fitness Spa",

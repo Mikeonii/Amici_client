@@ -7,16 +7,33 @@
       <v-card>
         <v-card-title><p class="display-1">Walk-in Session</p></v-card-title>
         <v-card-text>
+          <div v-if="searchResults.length > 0">
+            <h3>Search Results</h3>
+            <br />
+            <v-data-table dense :items="searchResults" :headers="searchHeaders">
+              <template v-slot:item.action="{ item }">
+                <v-btn small color="yellow" @click="selectSearch(item)"
+                  >Select</v-btn
+                >
+              </template>
+            </v-data-table>
+          </div>
+
           <h3>Add Session</h3>
           <v-form ref="form" @submit.prevent="add">
             <v-row>
               <v-col>
+                <p class="primary--text text-center" v-if="searchLoading">
+                  Loading names...
+                </p>
                 <v-text-field
                   autofocus
                   prepend-icon="mdi-account"
                   label="Customer Name"
                   v-model="form.customer_name"
+                  @input="searchCustomer()"
                 ></v-text-field>
+
                 <v-select
                   :items="['Male', 'Female']"
                   label="Gender"
@@ -158,6 +175,17 @@ export default {
         { text: "Payment Method", value: "payment_method" },
         { text: "Posted By", value: "posted_by" },
       ],
+      searchHeaders: [
+        { text: "Action", value: "action" },
+        { text: "id", value: "id" },
+        { text: "Customer Name", value: "customer_name" },
+        { text: "Address", value: "address" },
+        { text: "Age", value: "age" },
+        { text: "Gender", value: "customer_gender" },
+      ],
+      searchLoading: false,
+      searchDebounce: null,
+      searchResults: [],
     };
   },
   computed: {
@@ -167,6 +195,29 @@ export default {
     }),
   },
   methods: {
+    selectSearch(item) {
+      this.form.customer_name = item.customer_name;
+      this.form.address = item.address;
+      this.form.age = item.age;
+      this.form.customer_gender = item.customer_gender;
+    },
+    async searchCustomer() {
+      this.searchLoading = true;
+      // Clear the previous debounce timeout if it exists
+      if (this.searchDebounce) {
+        clearTimeout(this.searchDebounce);
+      }
+
+      // Set a new timeout
+      this.searchDebounce = setTimeout(async () => {
+        // search for a customer name in sessions table using like
+        let response = await axios.get(
+          `/sessions/search/${this.form.customer_name}`
+        );
+        this.searchResults = response.data;
+        this.searchLoading = false;
+      }, 2000); // 2000 milliseconds = 2 seconds
+    },
     async delete_session(item) {
       if (this.user.username != "admin") {
         this.alert_message = "You are not allowed to perform this action";

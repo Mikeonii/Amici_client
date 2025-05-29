@@ -123,16 +123,16 @@
             </v-col>
             <v-col cols="6">
               <!-- Items and Subscriptions -->
-              <h3>Subscriptions</h3>
+              <h3>Items and Subscriptions</h3>
 
               <v-text-field
-                label="Search Account"
+                label="Search Item"
                 prepend-icon="mdi-magnify"
-                v-model="search"
+                v-model="itemSearch"
               ></v-text-field>
               <v-data-table
                 dense
-                :search="search"
+                :search="itemSearch"
                 :items="items"
                 :headers="itemHeaders"
               >
@@ -215,7 +215,8 @@ export default {
       selected_item: {},
       selected_account: {},
       itemTransactions: [],
-      search: "",
+      itemSearch: "",
+      search: " ",
       itemTransactionSearch: "",
       quantity: 0,
       dialog: false,
