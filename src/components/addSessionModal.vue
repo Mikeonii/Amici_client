@@ -216,7 +216,7 @@ export default {
         );
         this.searchResults = response.data;
         this.searchLoading = false;
-      }, 2000); // 2000 milliseconds = 2 seconds
+      }, 1300); // 2000 milliseconds = 2 seconds
     },
     async delete_session(item) {
       if (this.user.username != "admin") {

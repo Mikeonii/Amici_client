@@ -64,7 +64,7 @@
                     readonly
                     type="number"
                     label="Total Amount"
-                    v-model="this.selected_item.total_amount"
+                    v-model="this.selected_item.amount"
                   ></v-text-field>
                   <v-select
                     class="ml-2"
@@ -174,9 +174,14 @@
               :headers="itemTransactionHeaders"
             >
               <template v-slot:item.action="{ item }">
-                <v-btn icon color="red" @click="deleteTransaction(item)"
-                  ><v-icon>mdi-delete</v-icon></v-btn
-                >
+                <div class="d-flex">
+                  <v-btn icon color="warning" @click="edit(item)"
+                    ><v-icon>mdi-pencil</v-icon></v-btn
+                  >
+                  <v-btn icon color="red" @click="deleteTransaction(item)"
+                    ><v-icon>mdi-delete</v-icon></v-btn
+                  >
+                </div>
               </template>
             </v-data-table>
           </div>
@@ -195,6 +200,11 @@
         </v-card-actions></v-card
       ></v-dialog
     >
+    <edit-subscription-modal
+      :item="editItem"
+      v-if="editModal"
+      @close="closeEdit"
+    />
   </div>
 </template>
 
@@ -204,9 +214,14 @@ import { mapActions, mapGetters } from "vuex";
 import alertModal from "../alertModal.vue";
 
 export default {
-  components: { alertModal },
+  components: {
+    alertModal,
+    editSubscriptionModal: () => import("./editSubscriptionModal.vue"),
+  },
   data() {
     return {
+      editModal: false,
+      editItem: {},
       alertMessage: "",
       enableAlert: false,
       methodItems: ["Renew", "Continue"],
@@ -276,8 +291,13 @@ export default {
       this.itemTransactions = itemTransactions.data;
       console.log("itemTransactions", this.itemTransactions);
     },
+    closeEdit() {
+      this.editModal = false;
+      this.alertMessage = "Successfully edited an item transaction";
+      this.enableAlert = true;
+    },
     calculate() {
-      this.selected_item.total_amount =
+      this.selected_item.amount =
         this.selected_item.selling_price * this.quantity;
       this.selected_item.quantity = this.quantity;
     },
@@ -290,6 +310,10 @@ export default {
     submit() {
       return;
     },
+    edit(item) {
+      this.editItem = item;
+      this.editModal = true;
+    },
     confirm_add() {
       if (!this.selected_account.id) {
         this.alertMessage = "Please select an account first";
@@ -297,7 +321,7 @@ export default {
         return;
       }
 
-      if (this.selected_item.total_amount <= 0) {
+      if (this.selected_item.amount <= 0) {
         this.alertMessage = "Please check total amount field";
         this.enableAlert = true;
         return;

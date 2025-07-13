@@ -31,6 +31,7 @@
         </v-col>
         <v-col class="d-flex">
           <add-session-modal />
+          <item-sales-modal class="ml-2" />
           <v-btn class="ml-2" @click="show_top_gymmer = true"
             >Top Gym-Goers</v-btn
           >
@@ -249,6 +250,7 @@ import moment from "moment";
 // import accountNotFoundAudio from "@/assets/notFound.wav";
 
 import AddSessionModal from "./addSessionModal.vue";
+import ItemSalesModal from "./ItemSales/itemSalesModal.vue";
 export default {
   data() {
     return {
@@ -286,6 +288,7 @@ export default {
     AddSessionModal,
     topGymmersModal: () => import("./topGymmersModal.vue"),
     messageModal: () => import("./messageModal.vue"),
+    ItemSalesModal,
   },
   computed: {
     ...mapGetters({

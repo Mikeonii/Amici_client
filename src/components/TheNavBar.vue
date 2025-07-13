@@ -147,7 +147,7 @@ export default {
 
         {
           icon: "mdi-package-variant-closed",
-          name: "Items",
+          name: "Subscriptions",
           route: "/items",
         },
       ],

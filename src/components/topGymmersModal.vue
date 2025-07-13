@@ -22,7 +22,10 @@
               <div class="pa-2">
                 <v-avatar size="40" color="grey darken-3">
                   <h2
-                    v-if="item.profile_picture_url == 'n/a'"
+                    v-if="
+                      item.profile_picture_url == 'n/a' ||
+                      item.profile_picture_url == null
+                    "
                     class="white--text"
                   >
                     {{ item.name.charAt(0) }}
