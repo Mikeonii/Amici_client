@@ -67,6 +67,12 @@
                 <v-btn color="primary" type="submit" :loading="button_loading"
                   >Add Session</v-btn
                 >
+                <v-btn
+                  color="warning"
+                  :loading="button_loading"
+                  @click="editSession"
+                  >Edit Session</v-btn
+                >
               </v-col>
             </v-row>
           </v-form>
@@ -106,9 +112,14 @@
             :headers="session_headers"
           >
             <template v-slot:item.action="{ item }">
-              <v-btn icon color="red" @click="delete_session(item)"
-                ><v-icon>mdi-delete</v-icon></v-btn
-              >
+              <div class="d-flex">
+                <v-btn icon color="warning" @click="setEditSession(item)">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn icon color="red" @click="delete_session(item)"
+                  ><v-icon>mdi-delete</v-icon></v-btn
+                >
+              </div>
             </template>
           </v-data-table>
         </v-card-text>
@@ -195,6 +206,26 @@ export default {
     }),
   },
   methods: {
+    setEditSession(item) {
+      this.form.id = item.id;
+      this.form.customer_name = item.customer_name;
+      this.form.address = item.address;
+      this.form.age = item.age;
+      this.form.customer_gender = item.customer_gender;
+      this.form.amount_paid = item.amount_paid;
+      this.form.payment_method = item.payment_method;
+    },
+    async editSession() {
+      let response = await axios.put("/session", this.form);
+      this.sessions.splice(
+        this.sessions.findIndex((s) => s.id === this.form.id),
+        1,
+        response.data
+      );
+      this.alert_message = "Successfully updated a session";
+      this.enable_alert = true;
+    },
+
     selectSearch(item) {
       this.form.customer_name = item.customer_name;
       this.form.address = item.address;
