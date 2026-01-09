@@ -44,6 +44,7 @@ export default {
     },
     default_server_url() {
       return "http://127.0.0.1:8000";
+      // return "http://192.168.1.109:8000";
       // return "https://server.jmbcomputers.com";
     },
     show_navs(state) {

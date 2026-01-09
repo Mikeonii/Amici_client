@@ -137,10 +137,12 @@ export default {
       let x = window.confirm("Are you sure you want to delete this account?");
       if (x) {
         this.button_loading = true;
+        this.loading = true;
         this.delete_account(id).then(() => {
           alert("Successfully deleted an account");
         });
         this.button_loading = false;
+        this.loading = false;
       }
     },
   },

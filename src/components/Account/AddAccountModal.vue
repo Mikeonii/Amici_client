@@ -26,6 +26,7 @@
                 v-model="form.birth_date"
                 class="ml-2 mt-n4"
                 :rules="[rules.required]"
+                @input="checkAge()"
               />
               <v-text-field
                 class="ml-2"
@@ -75,6 +76,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import moment from "moment";
 export default {
   components: { alertModal: () => import("../alertModal.vue") },
   data() {
@@ -94,6 +96,14 @@ export default {
     ...mapActions({
       add_account: "account/add_account",
     }),
+
+    checkAge() {
+      if (this.form.birth_date) {
+        const birthDate = moment(this.form.birth_date);
+        const today = moment();
+        this.form.age = today.diff(birthDate, "years");
+      }
+    },
     async submit() {
       // Validate the form
       await this.$refs.form.validate();

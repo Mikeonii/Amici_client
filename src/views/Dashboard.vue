@@ -17,7 +17,8 @@
         <add-subscription-modal class="mr-2" />
         <expired-accounts-modal />
         <add-user-modal class="ml-2" />
-        <add-expense-modal class="ml-2" />
+        <!-- <add-expense-modal class="ml-2" /> -->
+        <add-reward-modal class="ml-2" />
       </div>
       <file-uploader />
       <attendance-summary-table />
@@ -42,9 +43,11 @@ import SalesListTable from "../components/Reports/SalesListTable.vue";
 import FileUploader from "../components/fileUploader.vue";
 import ExpiredAccountsModal from "../components/Account/expiredAccountsModal.vue";
 import AddUserModal from "../components/User/addUserModal.vue";
-import AddExpenseModal from "../components/Expense/addExpenseModal.vue";
+// import AddExpenseModal from "../components/Expense/addExpenseModal.vue";
 import CheckAccountModal from "../components/CustomerUI/CheckAccountModal.vue";
 import AddSubscriptionModal from "../components/Subscriptions/addSubscriptionModal.vue";
+import AddRewardModal from "../components/Account/addRewardModal.vue";
+
 export default {
   components: {
     AttendanceSummaryTable,
@@ -55,9 +58,10 @@ export default {
     FileUploader,
     ExpiredAccountsModal,
     AddUserModal,
-    AddExpenseModal,
+    // AddExpenseModal,
     CheckAccountModal,
     AddSubscriptionModal,
+    AddRewardModal,
   },
   data() {
     return {};
