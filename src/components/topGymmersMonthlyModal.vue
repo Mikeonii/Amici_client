@@ -376,19 +376,23 @@ export default {
 
       this.assignLoading = true;
       try {
+        // Split gym goers into rank groups (A: 1-3, B: 4-6, C: 7-10)
+        const selectedRankA = this.topGymGoers.slice(0, 3).map(g => ({ id: g.id, name: g.name }));
+        const selectedRankB = this.topGymGoers.slice(3, 6).map(g => ({ id: g.id, name: g.name }));
+        const selectedRankC = this.topGymGoers.slice(6, 10).map(g => ({ id: g.id, name: g.name }));
+
         const payload = {
-          month: this.selectedMonth,
+          month: this.months.find(m => m.value === this.selectedMonth)?.name,
           year: this.selectedYear,
-          topGymGoers: this.topGymGoers.map((gymmer, index) => ({
-            id: gymmer.id,
-            name: gymmer.name,
-            position: index + 1,
-            rewardDays: this.getRewardDaysForPosition(index),
-          })),
-          rewardDays: this.rewardDays,
+          selectedRankA,
+          selectedRankB,
+          selectedRankC,
+          rankA: this.rewardDays.rankA,
+          rankB: this.rewardDays.rankB,
+          rankC: this.rewardDays.rankC,
         };
 
-        await axios.post("/assign_top_gymmer_rewards", payload);
+        await axios.post("/assign_rewards", payload);
         alert("Rewards assigned successfully!");
       } catch (error) {
         console.error("Error assigning rewards:", error);
